@@ -1,7 +1,4 @@
-<h1 align="center"> Keays XYZ Boot Homepage
+<img height="60px" width="60px" align="center" src="https://github.com/berlintay/KeaysBootXYZ_WEB/blob/3f293d49d66c1503145d8d5540ceafca4c1d4265/media/image-removebg-preview.png">
+<h1 align-content="left" font-size="24px">Keays XYZ Boot Homepage</h1>
 
-<p align="justify">Working on a nice and simple animated boot style page, one page html with a custom boot like video
-</p>
-</h1>
-
-<img src="https://github.com/berlintay/KeaysBootXYZ_WEB/blob/master/media/mod.gif">
+<img heigth="max" width="max"  align-content="center" src="https://github.com/berlintay/KeaysBootXYZ_WEB/blob/master/media/mod.gif">

@@ -1,16 +1,6 @@
-# Keays XYZ Boot Homepage
+<h1 alight="center"> Keays XYZ Boot Homepage
+</h1>
+<p align="justify">Working on a nice and simple animated boot style page, one page html with a custom boot like video
+</p>
 
-Working on a nice and simple animated boot style page.
-
-one page html with a custom boot like video
-
-
-
-
-
-
-
-
-url soon :)
-
-![img](https://github.com/berlintay/KeaysBootXYZ_WEB/blob/1227aeba84c1ce3ce7530147d4d27e2be17e41cf/media/mod.gif)
+https://github.com/user-attachments/assets/2e392fbe-d535-49ce-8f8d-a692786e36c3

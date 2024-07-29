@@ -4,4 +4,4 @@
 </p>
 </h1>
 
-![img]("https://github.com/berlintay/KeaysBootXYZ_WEB/blob/master/media/mod.gif")
+<img src="https://github.com/berlintay/KeaysBootXYZ_WEB/blob/master/media/mod.gif">

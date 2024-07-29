@@ -1,18 +1,28 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KeaysXYZ - Freelance Web Services</title>
+    <title>KeaysXYZ Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --main-bg-color: #000000;
+            --main-text-color: #8A2BE2;
+            --accent-color: #4169E1;
+            --highlight-color: #9370DB;
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            background-color: #000;
-            color: #0F0;
-            font-family: 'Courier New', monospace;
-            overflow: hidden;
+            background-color: var(--main-bg-color);
+            color: var(--main-text-color);
+            font-family: 'IBM Plex Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #boot-screen, #boot-message {
@@ -24,31 +34,55 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #000;
+            background-color: var(--main-bg-color);
             z-index: 1000;
-        }
-
-        #boot-animation {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            color: var(--highlight-color);
+            font-size: 24px;
         }
 
         #main-interface {
-            display: none;
-            height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
+            text-align: center;
+            width: 100%;
+            max-width: 1080px;
+        }
+
+        #ascii-header {
+            text-align: justify;
+            white-space: pre;
+            font-size: 16px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--highlight-color);
+        }
+
+        #links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            #links a {
+                color: var(--accent-color);
+                text-decoration: none;
+                margin: 0 10px;
+                transition: color 0.3s ease;
+            }
+
+                #links a:hover {
+                    color: var(--highlight-color);
+                    text-decoration: underline;
+                }
+
+        .prompt {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: var(--accent-color);
         }
 
         #terminal {
-            height: calc(100% - 30px);
+            height: -moz-fit-content;
             overflow-y: auto;
             padding-bottom: 20px;
-        }
-
-        .prompt {
-            color: #0F0;
+            text-align: inherit;
         }
 
         .cursor {
@@ -64,8 +98,8 @@
         #command-input {
             background-color: transparent;
             border: none;
-            color: #0F0;
-            font-family: 'Courier New', monospace;
+            color: var(--main-text-color);
+            font-family: 'IBM Plex Mono', monospace;
             font-size: 16px;
             width: calc(100% - 50px);
             outline: none;
@@ -73,16 +107,17 @@
 
         .window {
             position: absolute;
-            background-color: rgba(0, 0, 0, 0.8);
-            border: 1px solid #0F0;
+            background-color: rgba(0, 0, 51, 0.9);
+            border: 1px solid var(--accent-color);
             min-width: 300px;
             min-height: 200px;
             display: none;
+            color: var(--main-text-color);
         }
 
         .window-header {
-            background-color: #0F0;
-            color: #000;
+            background-color: var(--accent-color);
+            color: var(--main-bg-color);
             padding: 5px;
             cursor: move;
         }
@@ -96,9 +131,9 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 30px;
-            background-color: #0F0;
-            color: #000;
+            height: 10px;
+            background-color: var(--accent-color);
+            color: var(--main-bg-color);
             display: flex;
             align-items: center;
             padding: 0 10px;
@@ -107,21 +142,38 @@
         .taskbar-item {
             margin-right: 10px;
             cursor: pointer;
+            transition: color 0.3s ease;
         }
+
+            .taskbar-item:hover {
+                color: var(--highlight-color);
+            }
     </style>
 </head>
 <body>
     <div id="boot-screen">
-        <video id="boot-animation" muted>
-            <source src="boot.mp4" type="video/mp4">
+        <video id="boot-video" autoplay muted>
+            <source src=".\\media\\boot.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
-    <div id="boot-message" style="display: none;">Booting KEAYSXYZ</div>
-    <div id="main-interface">
+    <div id="main-interface" style="display: none;align-content: flex-start;">
+        <div id="ascii-header">
+    ██   █████████ ███████    █████████    ██   ████    █████████
+    ██  ██ ██     ██   ████  ██ ██          ██ ██  ██  ██    ███
+    █████  █████  ███████ ████  ███████      ███    ████    ███
+    ██  ██ ██     ██   ██  ██        ██     ██ ██    ██    ███
+    ██   ███████████   ██  ██   ███████    ██   ██   ██   ███████
+        </div>
+        <div id="links">
+            <a href="mailto:josh@keays.xyz">Email</a>
+            <a href="https://www.linkedin.com/in/jtkeays" target="_blank">LinkedIn</a>
+            <a href="https://github.com/berlintay" target="_blank">GitHub</a>
+        </div>
         <div id="terminal"></div>
-        <div>
-            <span class="prompt">keaysxyz@freelance:~$</span>
+        <div class="prompt">
+            keaysxyz in [main/src] at
+            <span id="current-time"></span>:~$
             <input type="text" id="command-input" autofocus>
         </div>
     </div>
@@ -129,25 +181,27 @@
 
     <script>
         const bootScreen = document.getElementById('boot-screen');
-        const bootAnimation = document.getElementById('boot-animation');
         const bootMessage = document.getElementById('boot-message');
         const mainInterface = document.getElementById('main-interface');
         const terminal = document.getElementById('terminal');
         const commandInput = document.getElementById('command-input');
         const taskbar = document.getElementById('taskbar');
+        const currentTime = document.getElementById('current-time');
 
-        bootAnimation.play();
+        function updateTime() {
+            const now = new Date();
+            currentTime.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+        }
 
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Updated to 5000ms (5 seconds) for the boot video duration
         setTimeout(() => {
             bootScreen.style.display = 'none';
-            bootMessage.style.display = 'flex';
-            setTimeout(() => {
-                bootMessage.style.display = 'none';
-                mainInterface.style.display = 'block';
-                initializeTerminal();
-            }, 1000);
+            mainInterface.style.display = 'block';
+            initializeTerminal();
         }, 5000);
-
 
         function initializeTerminal() {
             appendToTerminal("Welcome to KeaysXYZ Freelance Web Services!");
@@ -161,7 +215,7 @@
             terminal.scrollTop = terminal.scrollHeight;
         }
 
-        commandInput.addEventListener('keydown', function (event) {
+        commandInput.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
                 const command = this.value.trim().toLowerCase();
                 appendToTerminal(`keaysxyz@freelance:~$ ${command}`);
@@ -171,7 +225,7 @@
         });
 
         function processCommand(command) {
-            switch (command) {
+            switch(command) {
                 case 'help':
                     appendToTerminal("Available commands: about, services, portfolio, contact, clear");
                     break;
@@ -201,9 +255,9 @@
             windowElement.className = 'window';
             windowElement.id = windowId;
             windowElement.innerHTML = `
-                    <div class="window-header">${title}</div>
-                    <div class="window-content">${content}</div>
-                `;
+                <div class="window-header">${title}</div>
+                <div class="window-content">${content}</div>
+            `;
             document.body.appendChild(windowElement);
             makeWindowDraggable(windowElement);
             showWindow(windowId);
@@ -253,5 +307,4 @@
         }
     </script>
 </body>
-</html>
 </html>

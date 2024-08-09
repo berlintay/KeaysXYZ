@@ -24,6 +24,12 @@ jobs:
 
       - name: Capture Screenshot
         run: |
-          node capture-screenshot.js
+          node scripts/capture-screenshot.js
         env:
           WEBSITE_URL: 'http://www.keays.xyz'
+
+      - name: Upload Screenshot
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshot
+          path: media/screenshot.png

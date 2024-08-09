@@ -1,22 +1,15 @@
-name: Capture Screenshot
-
-on:
-  schedule:
-    - cron: '0 0 * * *' # Daily at midnight
-  workflow_dispatch:
-
 jobs:
   capture:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3  # Update to the latest version
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3  # Update to the latest version
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Ensure Node.js 20 is used
+          node-version: '20'
 
       - name: Install Dependencies
         run: |
@@ -24,7 +17,7 @@ jobs:
 
       - name: Capture Screenshot
         run: |
-          node capture-screenshot.js
+          node scripts/capture-screenshot.js
         env:
           WEBSITE_URL: 'http://www.keays.xyz'
 
@@ -36,8 +29,11 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.email "tay@aidot.org"
-          git config --global user.name "berlintay"
+          git config --global user.email "your-email@example.com"
+          git config --global user.name "your-name"
+          git config --global url."https://github.com/".insteadOf git@github.com:
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit and Push Screenshot
         run: |

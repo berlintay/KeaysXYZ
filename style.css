@@ -1,0 +1,57 @@
+:root {
+    --main-bg-color: #1f1f28;
+    --main-text-color: #dcd7ba;
+    --accent-color: #7e9cd8;
+    --highlight-color: #957fb8;
+}
+
+body, html {
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+#ascii-header {
+    color: var(--highlight-color);
+    text-align: center;
+    margin: 20px 0;
+}
+
+#links {
+    text-align: center;
+}
+
+#links a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#links a:hover {
+    color: var(--highlight-color);
+}
+
+#terminal {
+    padding: 20px;
+    height: 60vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+}
+
+.prompt {
+    display: flex;
+    align-items: center;
+}
+
+.prompt span {
+    color: var(--accent-color);
+}
+
+#command-input {
+    background-color: transparent;
+    border: none;
+    color: var(--main-text-color);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    outline: none;
+    caret-color: var(--main-text

@@ -1,0 +1,29 @@
+name: Capture Screenshot
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Daily at midnight
+  workflow_dispatch:
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: |
+          npm install puppeteer
+
+      - name: Capture Screenshot
+        run: |
+          node capture-screenshot.js
+        env:
+          WEBSITE_URL: 'http://www.keays.xyz'

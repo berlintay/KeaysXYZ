@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # Use a Node.js version that supports modern syntax
+          node-version: '18'
 
       - name: Install Dependencies
         run: |
@@ -34,10 +34,13 @@ jobs:
           name: screenshot
           path: media/screenshot.png
 
-      - name: Commit and Push Screenshot
+      - name: Set up Git
         run: |
           git config --global user.email "your-email@example.com"
           git config --global user.name "your-name"
+
+      - name: Commit and Push Screenshot
+        run: |
           git add media/screenshot.png
           git commit -m "Update screenshot"
           git push

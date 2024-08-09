@@ -1,22 +1,23 @@
 const puppeteer = require('puppeteer');
-const fs = require('fs');
-const path = require('path');
 
-(async () => {
+async function waitForBoot(url) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto(process.env.WEBSITE_URL);
-  const screenshot = await page.screenshot({ fullPage: true });
 
-  // Define the path to the media directory
-  const mediaDir = path.join(__dirname, 'media');
-
-  // Ensure the media directory exists
-  if (!fs.existsSync(mediaDir)) {
-    fs.mkdirSync(mediaDir);
+  let isReady = false;
+  while (!isReady) {
+    try {
+      await page.goto(url);
+      // Check if a specific element is present or page content is ready
+      isReady = true;  // Replace with actual condition check
+    } catch (error) {
+      console.log('Not ready yet, retrying...');
+      await new Promise(resolve => setTimeout(resolve, 30000));  // Wait for 30 seconds
+    }
   }
 
-  // Save the screenshot in the media directory
-  fs.writeFileSync(path.join(mediaDir, 'screenshot.png'), screenshot);
+  await page.screenshot({ path: 'media/screenshot.png' });
   await browser.close();
-})();
+}
+
+waitForBoot('http://www.keays.xyz');

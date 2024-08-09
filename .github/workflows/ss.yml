@@ -33,3 +33,13 @@ jobs:
         with:
           name: screenshot
           path: media/screenshot.png
+
+      - name: Commit and Push ss
+        run: |
+          git config --global user.email "info@keays.xyz"
+          git config --global user.name "berlintay"
+          git add media/screenshot.png
+          git commit -m "Update screenshot"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

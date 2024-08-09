@@ -1,0 +1,29 @@
+name: Check Status
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Every hour
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if the website is responding
+        run: |
+          curl -Is http://www.keays.xyz | head -n 1 | grep "200 OK"
+        continue-on-error: true
+
+      - name: Notify via SMS if the website is down
+        if: failure()
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_PHONE_NUMBER: ${{ secrets.TWILIO_PHONE_NUMBER }}
+          TO_PHONE_NUMBER: ${{ secrets.TO_PHONE_NUMBER }}
+        run: |
+          curl -X POST "https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json" \
+          --data-urlencode "Body=Website 👇📉" \
+          --data-urlencode "From=${TWILIO_PHONE_NUMBER}" \
+          --data-urlencode "To=${TO_PHONE_NUMBER}" \
+          -u "${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}"

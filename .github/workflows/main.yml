@@ -3,7 +3,7 @@ name: Check Status
 on:
   schedule:
     - cron: '0 * * * *' # Every hour
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
   check:
@@ -11,20 +11,26 @@ jobs:
 
     steps:
       - name: Check if the website is responding
+        id: check
         run: |
-          curl -Is http://www.keays.xyz | head -n 1 | grep "200 OK"
-        continue-on-error: true
+          status=$(curl -Is http://www.keays.xyz | head -n 1 | grep "200 OK" || echo "down")
+          echo "status=$status" >> $GITHUB_ENV
 
-      - name: Notify via SMS if the website is down
-        if: failure()
+      - name: Notify via SMS if website status
+        if: always()  # Always run this step
         env:
           TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
           TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
           TWILIO_PHONE_NUMBER: ${{ secrets.TWILIO_PHONE_NUMBER }}
           TO_PHONE_NUMBER: ${{ secrets.TO_PHONE_NUMBER }}
         run: |
+          if [ "$status" = "down" ]; then
+            message="Website is down!"
+          else
+            message="Website is up and running."
+          fi
           curl -X POST "https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json" \
-          --data-urlencode "Body=Website 👇📉" \
+          --data-urlencode "Body=$message" \
           --data-urlencode "From=${TWILIO_PHONE_NUMBER}" \
           --data-urlencode "To=${TO_PHONE_NUMBER}" \
           -u "${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}"

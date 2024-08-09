@@ -24,7 +24,7 @@ jobs:
 
       - name: Capture Screenshot
         run: |
-          node scripts/capture-screenshot.js
+          node capture-screenshot.js
         env:
           WEBSITE_URL: 'http://www.keays.xyz'
 

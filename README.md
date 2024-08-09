@@ -18,11 +18,9 @@
 - [ ] Complete documentation
 
 
-### 📸 Screenshots
+## Live Screenshot
 
-<div align="center">
-  <img height="300px" width="auto" src="https://github.com/berlintay/KeaysBootXYZ_WEB/blob/master/media/mod.gif" alt="Demo">
-</div>
+![Live Screenshot](https://github.com/berlintay/KeaysXYZ/raw/master/media/screenshot.png)
 
 ### 📬 Contact
 

@@ -6,6 +6,7 @@ on:
       - master
   schedule:
     - cron: '0 * * * *'  # Runs every hour (optional)
+
 jobs:
   capture:
     runs-on: ubuntu-latest
@@ -39,7 +40,9 @@ jobs:
         run: |
           git config --global user.email "tay@aidot.org"
           git config --global user.name "berlintay"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git config --global url."https://github.com/".insteadOf git@github.com:
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKE }}
 
       - name: Commit and Push Screenshot
         run: |

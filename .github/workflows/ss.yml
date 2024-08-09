@@ -38,7 +38,8 @@ jobs:
       - name: Commit and Push Screenshot
         run: |
           git add media/screenshot.png
-          git commit -m "Update screenshot"
+          git commit -m "Update screenshot" || echo "No changes to commit"
+          git pull --rebase
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKE }}

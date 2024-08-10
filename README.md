@@ -7,7 +7,7 @@
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Website](https://img.shields.io/website?url=http%3A%2F%2Fwww.keays.xyz)
-
+[![System Uptime](https://img.shields.io/pingpong/uptime/sp_85d37043ee50441680571174e89a7069)](https://keays.pingpong.host/)
 
 
  

@@ -4,7 +4,6 @@ body, html {
     font-family: 'IBM Plex Mono', monospace;
     background-color: #1f1f28;
     color: #dcd7ba;
-    height: 100%;
 }
 
 #boot-screen {
@@ -21,7 +20,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%; /* Ensure the main interface takes full height */
+    margin-top: 50px;
 }
 
 #ascii-header {
@@ -63,22 +62,21 @@ body, html {
 }
 
 #terminal {
-    flex-grow: 1; /* This will allow the terminal to expand and fill available space */
     width: 80%;
+    height: 200px;
+    margin-top: 20px;
     padding: 10px;
     background-color: black;
     color: #00FF00;
     overflow-y: auto;
     border: 1px solid #00FF00;
     border-radius: 5px;
-    margin-bottom: 10px; /* Add some margin to separate it from the prompt */
 }
 
 .prompt {
     display: flex;
     align-items: center;
-    width: 80%; /* Ensure the prompt spans the same width as the terminal */
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .prompt span {

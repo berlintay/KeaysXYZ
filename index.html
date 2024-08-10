@@ -4,44 +4,271 @@
     <meta charset="UTF-8">
     <title>KeaysXYZ Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --main-bg-color: #000000;
+            --main-text-color: #8A2BE2;
+            --accent-color: #4169E1;
+            --highlight-color: #9370DB;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--main-bg-color);
+            color: var(--main-text-color);
+            font-family: 'IBM Plex Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #boot-screen, #boot-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--main-bg-color);
+            z-index: 1000;
+            color: var(--highlight-color);
+            font-size: 24px;
+        }
+
+        #main-interface {
+            text-align: center;
+            width: 100%;
+            max-width: 1080px;
+        }
+
+        #ascii-header {
+            text-align: justify;
+            white-space: pre;
+            font-size: 16px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--highlight-color);
+        }
+
+        #links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            #links a {
+                color: var(--accent-color);
+                text-decoration: none;
+                margin: 0 10px;
+                transition: color 0.3s ease;
+            }
+
+                #links a:hover {
+                    color: var(--highlight-color);
+                    text-decoration: underline;
+                }
+
+        .prompt {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        #terminal {
+            height: -moz-fit-content;
+            overflow-y: auto;
+            padding-bottom: 20px;
+            text-align: inherit;
+        }
+
+        .cursor {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        #command-input {
+            background-color: transparent;
+            border: none;
+            color: var(--main-text-color);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 16px;
+            width: calc(100% - 50px);
+            outline: none;
+        }
+
+        .window {
+            position: absolute;
+            background-color: rgba(0, 0, 51, 0.9);
+            border: 1px solid var(--accent-color);
+            min-width: 300px;
+            min-height: 200px;
+            display: none;
+            color: var(--main-text-color);
+        }
+
+        .window-header {
+            background-color: var(--accent-color);
+            color: var(--main-bg-color);
+            padding: 5px;
+            cursor: move;
+        }
+
+        .window-content {
+            padding: 10px;
+        }
+
+        #taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background-color: var(--accent-color);
+            color: var(--main-bg-color);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .taskbar-item {
+            margin-right: 10px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+            .taskbar-item:hover {
+                color: var(--highlight-color);
+            }
+    </style>
 </head>
 <body>
-    <div id="boot-screen">
-        <video id="boot-video" autoplay muted>
-            <source src="media/boot.mp4" type="video/mp4">
+    <div id="boot-screen" aria-live="polite" aria-label="Boot Screen">
+        <video id="boot-video" autoplay muted aria-label="Boot video">
+            <source src=".\\media\\boot.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
-    <div id="main-interface" style="display: none;">
+    <div id="main-interface" style="display: none;" aria-live="polite">
         <div id="ascii-header">
-            <pre>
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~ _  _______    _ __   ________  ___   _______~
-~| |/ / ____|  / \\ \ / / ___\ \/ | \ / /__  /~
-~| ' /|  _|   / _ \\ V /\___ \\  / \ V /  / / ~
-~| . \| |___ / ___ \| |  ___) /  \  | |  / /_ ~
-~|_|\_\_____/_/   \_\_| |____/_/\_\ |_| /____|~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            </pre>
-        </div>
-        <div id="trending-container">
-    <h2>Trending Repositories</h2>
-    <div id="trending-repos"></div>
+    ██   █████████ ███████    █████████    ██   ████    █████████
+    ██  ██ ██     ██   ████  ██ ██          ██ ██  ██  ██    ███
+    █████  █████  ███████ ████  ███████      ███    ████    ███
+    ██  ██ ██     ██   ██  ██        ██     ██ ██    ██    ███
+    ██   ███████████   ██  ██   ███████    ██   ██   ██   ███████
         </div>
         <div id="links">
             <a href="mailto:josh@keays.xyz">Email</a>
             <a href="https://www.linkedin.com/in/jtkeays" target="_blank">LinkedIn</a>
             <a href="https://github.com/berlintay" target="_blank">GitHub</a>
         </div>
-        <div id="terminal"></div>
+        <div id="terminal" aria-live="polite"></div>
         <div class="prompt">
-            <span id="prompt-line"></span>
-            <input type="text" id="command-input" autofocus>
+            keaysxyz in [main/src] at
+            <span id="current-time"></span>:~$
+            <input type="text" id="command-input" autofocus aria-label="Command input">
         </div>
-        <div id="window-container"></div>
     </div>
-    <div id="taskbar"></div>
-    <script src="script.js"></script>
-</body>
-</html>
+    <div id="taskbar" aria-live="polite"></div>
+
+    <script>
+        const bootScreen = document.getElementById('boot-screen');
+        const bootMessage = document.getElementById('boot-message');
+        const mainInterface = document.getElementById('main-interface');
+        const terminal = document.getElementById('terminal');
+        const commandInput = document.getElementById('command-input');
+        const taskbar = document.getElementById('taskbar');
+        const currentTime = document.getElementById('current-time');
+
+        function updateTime() {
+            const now = new Date();
+            currentTime.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Updated to 5000ms (5 seconds) for the boot video duration
+        setTimeout(() => {
+            bootScreen.style.display = 'none';
+            mainInterface.style.display = 'block';
+            initializeTerminal();
+        }, 5000);
+
+        function initializeTerminal() {
+            appendToTerminal("Welcome to KeaysXYZ Freelance Web Services!");
+            appendToTerminal("Type 'help' for a list of available commands.");
+        }
+
+        function appendToTerminal(text) {
+            const line = document.createElement('div');
+            line.textContent = text;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        commandInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const command = this.value.trim().toLowerCase();
+                appendToTerminal(`keaysxyz@freelance:~$ ${command}`);
+                processCommand(command);
+                this.value = '';
+            }
+        });
+
+        function processCommand(command) {
+            switch(command) {
+                case 'help':
+                    appendToTerminal("Available commands: about, services, portfolio, contact, clear");
+                    break;
+                case 'about':
+                    createWindow('About KeaysXYZ', "<p>We are a cutting-edge freelance web development team...</p>");
+                    break;
+                case 'services':
+                    createWindow('Our Services', "<ul><li>Custom Web Development</li><li>UI/UX Design</li><li>E-commerce Solutions</li></ul>");
+                    break;
+                case 'portfolio':
+                    createWindow('Portfolio', "<p>Check out our recent projects...</p>");
+                    break;
+                case 'contact':
+                    createWindow('Contact Us', "<p>Email: info@keaysxyz.com<br>Phone: (555) 123-4567</p>");
+                    break;
+                case 'clear':
+                    terminal.innerHTML = '';
+                    break;
+                default:
+                    appendToTerminal(`Command not found: ${command}`);
+            }
+        }
+
+        function createWindow(title, content) {
+            const windowId = 'window-' + Date.now();
+            const windowElement = document.createElement('div');
+            windowElement.className = 'window';
+            windowElement.id = windowId;
+            windowElement.innerHTML = `
+                <div class="window-header">${title}</div>
+                <div class="window-content">${content}</div>
+            `;
+            document.body.appendChild(windowElement);
+            makeWindowDraggable(windowElement);
+            showWindow(windowId);
+            addToTaskbar(title, windowId);
+        }
+
+        function makeWindowDraggable(windowElement) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            windowElement.querySelector('.window-header').onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 =

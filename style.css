@@ -16,7 +16,7 @@ body, html {
 #ascii-header {
     color: #957fb8;
     text-align: center;
-    font-size: 32px;
+    font-size: 22px;
 }
 
 #trending-container {
@@ -58,7 +58,7 @@ body, html {
     justify-content: flex-end;
     align-items: center;
     font-size: 22px;
-    width: 100%;
+    width: 80%%;
     background-color: transparent;
     border: none;
     color: #dcd7ba;

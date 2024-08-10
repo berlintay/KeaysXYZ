@@ -2,8 +2,8 @@ name: Scrape Data Every 7 Hours
 
 on:
   schedule:
-    - cron: '0 */7 * * *'
-  workflow_dispatch:
+    - cron: '0 */7 * * *' # Runs every 7 hours
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
   scrape:
@@ -11,18 +11,22 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: '14'
+        node-version: '20' # Using Node.js version 20
 
     - name: Install dependencies
       run: npm install
 
+    - name: Start API server
+      run: |
+        nohup node /backend/api.js & # Starts the API server in the background
+
     - name: Run scraper script
-      run: node /backend/scrape.js
+      run: node /backend/scrape.js # Runs the scraping script
 
     - name: Commit and push changes
       run: |

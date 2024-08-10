@@ -23,10 +23,10 @@ jobs:
 
     - name: Start API server
       run: |
-        nohup node ./KeaysXYZ/backend/api.js & # Starts the API server in the background
+        nohup node ./backend/api.js & # Starts the API server in the background
 
     - name: Run scraper script
-      run: node ./KeaysXYZ/backend/scrape.js # Runs the scraping script
+      run: node ./backend/scrape.js # Runs the scraping script
 
     - name: Commit and push changes
       run: |

@@ -30,6 +30,25 @@
             <a href="https://www.linkedin.com/in/jtkeays" target="_blank">LinkedIn</a>
             <a href="https://github.com/berlintay" target="_blank">GitHub</a>
         </div>
+        <div id="github-trending-feed"></div>
+
+<script>
+  fetch('http://localhost:3000/api/github-trending')
+    .then(response => response.json())
+    .then(data => {
+      const feedContainer = document.getElementById('github-trending-feed');
+      data.forEach(repo => {
+        const repoElement = document.createElement('div');
+        repoElement.innerHTML = `
+          <h3>${repo.organization} / ${repo.repository}</h3>
+          <p>${repo.description}</p>
+        `;
+        feedContainer.appendChild(repoElement);
+      });
+    })
+    .catch(error => console.error('Error fetching GitHub trending data:', error));
+</script>
+
         <div id="terminal"></div>
         <div class="prompt">
             <span id="prompt-line"></span>

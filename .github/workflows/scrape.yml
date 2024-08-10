@@ -31,8 +31,8 @@ jobs:
         nohup node .backend/api.js & # Starts the API server in the background
 
     # Run the scraper
-    - name: Run scraper script
-      run: node --experimental-modules backend/scrape.js # Ensure this script handles scraping and storing the data
+    - name: Run scraper script # Eat a d**ck
+      run: node --experimental-modules backend/scrape.mjs # Ensure this script handles scraping and storing the data
 
     # If your scraper updates files that need to be committed back to the repository
     - name: Commit and push changes

@@ -6,7 +6,7 @@ const DATA_FILE = './data.json';
 
 const scrapeTrendingRepos = async () => {
   try {
-    const { data } = await axios.get('https://github.com/trending');
+    const { data } = await axios.get('https://github.com/trending/unknown?since=daily');
     const $ = cheerio.load(data);
 
     const trendingRepos = [];
@@ -16,8 +16,9 @@ const scrapeTrendingRepos = async () => {
       const repoName = $(element).find('h1.h3 a').text().replace(orgOrUserName, '').trim();
       const fullRepoName = `${orgOrUserName}${repoName}`;
       const description = $(element).find('p.col-9').text().trim();
-
-      trendingRepos.push({ name: fullRepoName, description });
+      const repoUrl = $(element).find('h1.h3 a').attr('href').trim(); // Get the repository URL
+    
+      trendingRepos.push({ name: fullRepoName, description, url: `https://github.com${repoUrl}` });
     });
 
     return trendingRepos;
@@ -46,4 +47,5 @@ const fetchAndAppendData = async () => {
     console.log('Data fetched and appended successfully.');
   } catch (error) {
     console.error('Error fetching or appending data:', error);
-    process.exit(1); // Exit
+    process.exit(1);
+    

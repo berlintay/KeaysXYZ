@@ -4,6 +4,7 @@
     "cheerio": "^1.0.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2",
     "pupeteer": "^0.0.1",
     "puppeteer": "^23.0.2"

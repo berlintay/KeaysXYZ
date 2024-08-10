@@ -1,62 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const bootScreen = document.getElementById('boot-screen');
-    const mainInterface = document.getElementById('main-interface');
-    const terminal = document.getElementById('terminal');
-    const commandInput = document.getElementById('command-input');
-    const promptLine = document.getElementById('prompt-line');
-    const currentTime = document.getElementById('current-time');
-
-    function updateTime() {
-        const now = new Date();
-        if (currentTime) {
-            currentTime.textContent = now.toLocaleTimeString('en-US', { hour12: false });
-        }
-    }
-
-    setInterval(updateTime, 1000);
-    updateTime();
-
-    setTimeout(() => {
-        bootScreen.style.display = 'none';
-        mainInterface.style.display = 'block';
-        initializeTerminal();
-    }, 2000);
-    function initializeTerminal() {
-        setPrompt();
-        appendToTerminal("Welcome, friend 📨 ");
-        appendToTerminal("Type 'help' for a list of commands!");
-        commandInput.focus();
-    }
-
-    function setPrompt(path = '~/path') {
-        const username = 'guest';
-        const hostname = 'keaysxyz';
-        promptLine.textContent = `(${username}𓅓${hostname})-$`;
-    }
-
-    function appendToTerminal(content, isHtml = false) {
-        const line = document.createElement('div');
-        if (isHtml) {
-            line.innerHTML = content;
-        } else {
-            line.textContent = content;
-        }
-        terminal.appendChild(line);
-        terminal.scrollTop = terminal.scrollHeight;
-    }
-
-    if (commandInput) {
-        commandInput.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter') {
-                const command = this.value.trim();
-                appendToTerminal(`- ${command}`);
-                processCommand(command);
-                this.value = '';
-            }
-        });
-    } else {
-        console.error('Command input element not found!');
-    }
 document.addEventListener("DOMContentLoaded", function() {
     // Fetch the GitHub trending repositories feed and display it
     fetch('/api/github-trending')
@@ -76,9 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error fetching GitHub trending data:', error));
 
-    // Your existing script logic here...
-});
-
+    // Function to process terminal commands
     function processCommand(command) {
         switch (command) {
             case 'help':
@@ -99,68 +38,38 @@ document.addEventListener("DOMContentLoaded", function() {
                 appendToTerminal("<ul><li>Email: info@keays.xyz</li><li>Cell: (506) 790-5712</li></ul>", true);
                 break;
             case 'clear':
-                terminal.innerHTML = ''; // Clear the entire terminal
-                setPrompt(); // Reset the prompt after clearing the terminal
+                clearTerminal();
                 break;
             default:
-                appendToTerminal(`Command ${command}: never heard of her 🤷‍♂️`);
+                appendToTerminal("Unknown command. Type 'help' for a list of available commands.");
+                break;
         }
     }
 
-    function createWindow(title, content) {
-        const windowId = 'window-' + Date.now();
-        const windowElement = document.createElement('div');
-        windowElement.className = 'window';
-        windowElement.id = windowId;
-        windowElement.innerHTML = `
-            <div class="window-header">${title}</div>
-            <div class="window-content">${content}</div>
-        `;
-        document.getElementById('window-container').appendChild(windowElement);
-        makeWindowDraggable(windowElement);
-        showWindow(windowId);
-        addToTaskbar(title, windowId);
-    }
-
-    function makeWindowDraggable(windowElement) {
-        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        windowElement.querySelector('.window-header').onmousedown = dragMouseDown;
-
-        function dragMouseDown(e) {
-            e = e || window.event;
-            e.preventDefault();
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.onmouseup = closeDragElement;
-            document.onmousemove = elementDrag;
+    // Event listener for terminal input
+    document.getElementById('command-input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            const command = event.target.value.trim();
+            processCommand(command);
+            event.target.value = ''; // Clear the input after processing
         }
-
-        function elementDrag(e) {
-            e = e || window.event;
-            e.preventDefault();
-            pos1 = pos3 - e.clientX;
-            pos2 = e.clientY - pos4;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            windowElement.style.top = (windowElement.offsetTop - pos2) + "px";
-            windowElement.style.left = (windowElement.offsetLeft - pos1) + "px";
-        }
-
-        function closeDragElement() {
-            document.onmouseup = null;
-            document.onmousemove = null;
-        }
-    }
-
-    function showWindow(windowId) {
-        document.getElementById(windowId).style.display = 'block';
-    }
-
-    function addToTaskbar(title, windowId) {
-        const taskbarItem = document.createElement('div');
-        taskbarItem.className = 'taskbar-item';
-        taskbarItem.textContent = title;
-        taskbarItem.onclick = () => showWindow(windowId);
-        document.getElementById('taskbar').appendChild(taskbarItem);
-    }
+    });
 });
+
+// Example functions for terminal management (these need to be defined elsewhere in your script)
+function appendToTerminal(content, isHtml = false) {
+    const terminal = document.getElementById('terminal');
+    const output = document.createElement('div');
+    if (isHtml) {
+        output.innerHTML = content;
+    } else {
+        output.textContent = content;
+    }
+    terminal.appendChild(output);
+}
+
+function clearTerminal() {
+    const terminal = document.getElementById('terminal');
+    terminal.innerHTML = ''; // Clear all terminal content
+}
+

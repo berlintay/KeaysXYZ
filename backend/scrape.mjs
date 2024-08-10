@@ -47,5 +47,6 @@ const fetchAndAppendData = async () => {
     console.log('Data fetched and appended successfully.');
   } catch (error) {
     console.error('Error fetching or appending data:', error);
-    process.exit(1);
-    
+  };
+    process.exit(1)
+}

@@ -3,6 +3,7 @@
     --main-text-color: #dcd7ba;
     --accent-color: #7e9cd8;
     --highlight-color: #957fb8;
+    --terminal-green: #00FF00;
 }
 
 body, html {
@@ -21,10 +22,32 @@ body, html {
     text-align: center;
 }
 
-#links a {
-    color: var(--accent-color);
-    text-decoration: none;
-    transition: color 0.3s ease;
+    #links a {
+        color: var(--accent-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+#terminal-prompt {
+    position: absolute;
+    top: 150px;
+    left: 20px;
+}
+
+#trending-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: var(--terminal-green); /* Terminal green */
+    font-family: monospace;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border: 1px solid var(--terminal-green);
+}
+
+.repo-item {
+    margin-bottom: 5px;
+    color: var(--terminal-green); /* Ensure this matches the terminal green */
 }
 
 #links a:hover {
@@ -43,9 +66,9 @@ body, html {
     align-items: center;
 }
 
-.prompt span {
-    color: var(--accent-color);
-}
+    .prompt span {
+        color: var(--accent-color);
+    }
 
 #command-input {
     background-color: transparent;
@@ -54,4 +77,46 @@ body, html {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 16px;
     outline: none;
-    caret-color: var(--main-text
+    caret-color: var(--main-text-color);
+}
+
+Updated script.
+.window {
+    position: absolute;
+    background-color: var(--main-bg-color);
+    border: 1px solid var(--highlight-color);
+    padding: 10px;
+    min-width: 200px;
+    z-index: 1000;
+    display: none;
+}
+
+.window-header {
+    background-color: var(--accent-color);
+    color: var(--main-bg-color);
+    padding: 5px;
+    cursor: move;
+}
+
+.window-content {
+    padding: 10px;
+    color: var(--main-text-color);
+}
+
+#taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-top: 1px solid var(--highlight-color);
+}
+
+.taskbar-item {
+    margin-right: 10px;
+    cursor: pointer;
+}

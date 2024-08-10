@@ -20,9 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
         bootScreen.style.display = 'none';
         mainInterface.style.display = 'block';
         initializeTerminal();
-         // Fetch and display trending repos after boot
-    }, 1000);
-    fetchTrendingRepositories();
+        fetchTrendingRepositories(); // Fetch and display trending repos after boot
+    }, 2000);
     function initializeTerminal() {
         setPrompt();
         appendToTerminal("Welcome, friend 📨 ");
@@ -59,31 +58,21 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Command input element not found!');
     }
-
     function fetchTrendingRepositories() {
-        fetch('/api/trending')
+        fetch('http://localhost:3000/api/trending')
             .then(response => response.json())
             .then(repos => {
                 const trendingRepos = document.getElementById('trending-repos');
-                trendingRepos.innerHTML = ''; // Clear any previous content
-                if (repos.length === 0) {
-                    trendingRepos.innerHTML = '<p>No trending repositories found.</p>';
-                } else {
-                    repos.forEach(repo => {
-                        const repoItem = document.createElement('div');
-                        repoItem.className = 'repo-item';
-                        repoItem.innerHTML = `<strong>${repo.name}</strong><br>${repo.description}`;
-                        trendingRepos.appendChild(repoItem);
-                    });
-                }
+                trendingRepos.innerHTML = ''; // Clear the container before appending new items
+                repos.forEach(repo => {
+                    const repoItem = document.createElement('div');
+                    repoItem.className = 'repo-item';
+                    repoItem.innerHTML = `<strong>${repo.repoName}</strong><br>${repo.description}`;
+                    trendingRepos.appendChild(repoItem);
+                });
             })
-            .catch(error => {
-                console.error('Error fetching trending repositories:', error);
-                const trendingRepos = document.getElementById('trending-repos');
-                trendingRepos.innerHTML = '<p>Failed to load trending repositories.</p>';
-            });
+            .catch(error => console.error('Error fetching trending repositories:', error));
     }
-
     function processCommand(command) {
         switch (command) {
             case 'help':

@@ -94,5 +94,4 @@ function clearTerminal() {
     const terminal = document.getElementById('terminal');
     terminal.innerHTML = ''; // Clear all terminal content
 }
-    
 });

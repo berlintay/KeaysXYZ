@@ -120,3 +120,33 @@ Updated script.
     margin-right: 10px;
     cursor: pointer;
 }
+#trending-container {
+    background-color: #282c34;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    max-width: 400px;
+    margin: 20px auto;
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+#trending-repos .repo {
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+}
+
+#trending-repos .repo:last-child {
+    border-bottom: none;
+}
+
+#trending-repos .repo h3 {
+    margin: 0;
+    font-size: 1em;
+    color: #61dafb;
+}
+
+#trending-repos .repo p {
+    margin: 5px 0 0;
+    font-size: 0.8em;
+    color: #bbb;
+}

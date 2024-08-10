@@ -77,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function() {
             event.target.value = ''; // Clear the input after processing
         }
     });
-});
 
 // Example functions for terminal management (these need to be defined elsewhere in your script)
 function appendToTerminal(content, isHtml = false) {

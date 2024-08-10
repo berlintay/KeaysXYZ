@@ -1,5 +1,5 @@
-const fs = require('fs');
-const fetch = require('node-fetch');  // Ensure you have node-fetch installed: npm install node-fetch
+import fetch from 'node-fetch';
+import fs from 'fs';// Ensure you have node-fetch installed: npm install node-fetch
 
 const DATA_FILE = './data.json';
 

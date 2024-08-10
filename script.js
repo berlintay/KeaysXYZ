@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
         bootScreen.style.display = 'none';
         mainInterface.style.display = 'block';
         initializeTerminal();
-        fetchTrendingRepositories(); // Fetch and display trending repos after boot
     }, 2000);
     function initializeTerminal() {
         setPrompt();

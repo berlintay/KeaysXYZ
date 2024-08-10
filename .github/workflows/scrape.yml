@@ -23,7 +23,7 @@ jobs:
 
 
     - name: Get chmod
-      run: chmod +x backend/scrape.js
+      run: chmod +x backend/scrape.mjs # brev eat a fokin deck
 
     # If your scraper depends on an API running, then keep this step
     - name: Start API server

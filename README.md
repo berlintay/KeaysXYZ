@@ -27,7 +27,7 @@
 For any questions or feedback, feel free to reach out:
 
 - **Email:** [contact@keays.xyz](mailto:contact@keays.xyz)
-- **Twitter:** [@KeaysXYZ](https://twitter.com/KeaysXYZ)
+- **Twitter:** [@KeaysXYZ](https://twitter.com/jtbrln)
 
 
 

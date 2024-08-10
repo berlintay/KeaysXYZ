@@ -57,20 +57,28 @@ body, html {
 }
 
 #terminal {
-    padding: 20px;
-    height: 60vh;
+    flex-grow: 1; /* This will allow the terminal to expand and fill available space */
+    width: 80%;
+    padding: 10px;
+    background-color: black;
+    color: #00FF00;
     overflow-y: auto;
-    white-space: pre-wrap;
+    border: 1px solid #00FF00;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Add some margin to separate it from the prompt */
 }
 
 .prompt {
     display: flex;
     align-items: center;
+    width: 80%; /* Ensure the prompt spans the same width as the terminal */
+    margin-bottom: 10px;
 }
 
 .prompt span {
-    color: var(--accent-color);
+    color: #7e9cd8;
 }
+
 
 #command-input {
     background-color: transparent;

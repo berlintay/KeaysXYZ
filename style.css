@@ -1,9 +1,18 @@
+:root {
+    --main-bg-color: #1f1f28;
+    --main-text-color: #dcd7ba;
+    --accent-color: #7e9cd8;
+    --highlight-color: #957fb8;
+    --terminal-green: #00FF00;
+}
+
 body, html {
     margin: 0;
     padding: 0;
     font-family: 'IBM Plex Mono', monospace;
-    background-color: #1f1f28;
-    color: #dcd7ba;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    height: 100%;
 }
 
 #boot-screen {
@@ -20,12 +29,28 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
+    height: 100%;
 }
 
 #ascii-header {
-    color: #957fb8;
+    color: var(--highlight-color);
     text-align: center;
+    margin: 20px 0;
+}
+
+#links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#links a {
+    color: var(--accent-color);
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+#links a:hover {
+    color: var(--highlight-color);
 }
 
 #trending-container {
@@ -33,9 +58,9 @@ body, html {
     top: 20px;
     right: 20px;
     background-color: rgba(0, 0, 0, 0.8);
-    color: #00FF00;
+    color: var(--terminal-green);
     padding: 15px;
-    border: 1px solid #00FF00;
+    border: 1px solid var(--terminal-green);
     border-radius: 5px;
     width: 300px;
     max-height: 400px;
@@ -46,52 +71,50 @@ body, html {
     margin-bottom: 10px;
 }
 
-#links {
-    text-align: center;
-    margin-top: 20px;
+#trending-repos .repo h3 {
+    margin: 0;
+    font-size: 1em;
+    color: #61dafb; /* Adjusted color to match the theme */
 }
 
-#links a {
-    color: #7e9cd8;
-    text-decoration: none;
-    margin: 0 10px;
-}
-
-#links a:hover {
-    color: #957fb8;
+#trending-repos .repo p {
+    margin: 5px 0 0;
+    font-size: 0.85em;
+    color: #ccc; /* Adjusted color to match the theme */
 }
 
 #terminal {
+    flex-grow: 1;
     width: 80%;
-    height: 200px;
-    margin-top: 20px;
     padding: 10px;
     background-color: black;
-    color: #00FF00;
+    color: var(--terminal-green);
     overflow-y: auto;
-    border: 1px solid #00FF00;
+    border: 1px solid var(--terminal-green);
     border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 .prompt {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    width: 80%;
+    margin-bottom: 10px;
 }
 
 .prompt span {
-    color: #7e9cd8;
+    color: var(--accent-color);
 }
 
 #command-input {
     background-color: transparent;
     border: none;
-    color: #dcd7ba;
+    color: var(--main-text-color);
     font-family: 'IBM Plex Mono', monospace;
     font-size: 16px;
     outline: none;
     width: 100%;
-    caret-color: #dcd7ba;
+    caret-color: var(--main-text-color);
 }
 
 #taskbar {
@@ -99,10 +122,10 @@ body, html {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #1f1f28;
-    color: #dcd7ba;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
     padding: 10px;
-    border-top: 1px solid #957fb8;
+    border-top: 1px solid var(--highlight-color);
     display: flex;
     justify-content: center;
 }

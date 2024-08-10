@@ -6,7 +6,8 @@
 
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Check Status](https://img.shields.io/badge/dynamic/yaml?url=github.com%2FKeaysXYZ%2F.github%2Fworkflows%2Fmain.yml)
+![Website](https://img.shields.io/website?url=http%3A%2F%2Fwww.keays.xyz)
+
 
 
  

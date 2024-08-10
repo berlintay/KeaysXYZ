@@ -20,8 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         bootScreen.style.display = 'none';
         mainInterface.style.display = 'block';
         initializeTerminal();
-    }, 5000);
-
+         // Fetch and display trending repos after boot
+    }, 1000);
+    fetchTrendingRepositories();
     function initializeTerminal() {
         setPrompt();
         appendToTerminal("Welcome, friend 📨 ");
@@ -47,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (commandInput) {
-        commandInput.addEventListener('keydown', function(event) {
+        commandInput.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
                 const command = this.value.trim();
                 appendToTerminal(`- ${command}`);
@@ -58,8 +59,33 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Command input element not found!');
     }
+
+    function fetchTrendingRepositories() {
+        fetch('/api/trending')
+            .then(response => response.json())
+            .then(repos => {
+                const trendingRepos = document.getElementById('trending-repos');
+                trendingRepos.innerHTML = ''; // Clear any previous content
+                if (repos.length === 0) {
+                    trendingRepos.innerHTML = '<p>No trending repositories found.</p>';
+                } else {
+                    repos.forEach(repo => {
+                        const repoItem = document.createElement('div');
+                        repoItem.className = 'repo-item';
+                        repoItem.innerHTML = `<strong>${repo.name}</strong><br>${repo.description}`;
+                        trendingRepos.appendChild(repoItem);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching trending repositories:', error);
+                const trendingRepos = document.getElementById('trending-repos');
+                trendingRepos.innerHTML = '<p>Failed to load trending repositories.</p>';
+            });
+    }
+
     function processCommand(command) {
-        switch(command) {
+        switch (command) {
             case 'help':
                 appendToTerminal("Commands available: about, services, portfolio, contact, clear");
                 break;
@@ -85,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 appendToTerminal(`Command ${command}: never heard of her 🤷‍♂️`);
         }
     }
-    
 
     function createWindow(title, content) {
         const windowId = 'window-' + Date.now();
@@ -119,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e = e || window.event;
             e.preventDefault();
             pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
+            pos2 = e.clientY - pos4;
             pos3 = e.clientX;
             pos4 = e.clientY;
             windowElement.style.top = (windowElement.offsetTop - pos2) + "px";
@@ -141,6 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
         taskbarItem.className = 'taskbar-item';
         taskbarItem.textContent = title;
         taskbarItem.onclick = () => showWindow(windowId);
-        taskbar.appendChild(taskbarItem);
+        document.getElementById('taskbar').appendChild(taskbarItem);
     }
 });

@@ -6,30 +6,33 @@ const DATA_FILE = './data.json';
 
 const scrapeTrendingRepos = async () => {
   try {
-    const { data } = await axios.get('https://github.com/trending/unknown?since=daily');
+    const { data } = await axios.get('https://github.com/trending');
     const $ = cheerio.load(data);
 
-    const trendingRepos = document.querySelectorAll('article h2 a');
+    const trendingRepos = [];
 
-repoLinks.forEach(anchor => {
-  // Assuming each anchor tag is a repository link
-  const orgNameElement = anchor.querySelector('.text-normal');
-  let orgName = orgNameElement ? orgNameElement.textContent.trim() : 'No org name';
-  
-  // Remove the trailing slash from the organization name
-  orgName = orgName.replace('/', '').trim();
-  
-  // Extracting repository name by removing the organization name from the anchor text
-  const fullText = anchor.textContent.replace(orgName, '').trim();
-  const repoName = fullText.replace('/', '').trim();
+    $('article h2 a').each((index, element) => {
+      const anchor = $(element);
+      const orgNameElement = anchor.find('.text-normal');
+      let orgName = orgNameElement.text().trim();
 
-  console.log(`Organization: ${orgName}`);
-  console.log(`Repository: ${repoName}`);
-});
+      // Remove the trailing slash from the organization name
+      orgName = orgName.replace('/', '').trim();
+
+      // Extracting repository name by removing the organization name from the anchor text
+      const repoName = anchor.text().replace(orgName, '').replace('/', '').trim();
+
+      // Adding the repository details to the array
+      trendingRepos.push({
+        organization: orgName || 'No org name',
+        repository: repoName || 'No repository name',
+      });
+    });
 
     return trendingRepos;
   } catch (error) {
     console.error('Error scraping trending repositories:', error);
+    return [];
   }
 };
 
@@ -53,6 +56,10 @@ const fetchAndAppendData = async () => {
     console.log('Data fetched and appended successfully.');
   } catch (error) {
     console.error('Error fetching or appending data:', error);
-  };
-    process.exit(1)
-}
+  } finally {
+    process.exit(1);
+  }
+};
+
+// Execute the function to fetch and append data
+fetchAndAppendData();

@@ -1,4 +1,16 @@
-  fetch('/trending_repos.json')
+document.addEventListener("DOMContentLoaded", function() {
+    const bootScreen = document.getElementById('boot-screen');
+    const mainInterface = document.getElementById('main-interface');
+    const bootVideo = document.getElementById('boot-video');
+
+    // Hide boot screen and show main interface after the video ends
+    bootVideo.onended = function() {
+        bootScreen.style.display = 'none';
+        mainInterface.style.display = 'block';
+    };
+
+    // Fetch the GitHub trending repositories feed and display it
+    fetch('/trending_repos.json')
         .then(response => response.json())
         .then(data => {
             const trendingContainer = document.getElementById('trending-repos');
@@ -27,18 +39,6 @@
             event.target.value = ''; // Clear the input after processing
         }
     });
-
-    // Function to update the current time display
-    function updateTime() {
-        const now = new Date();
-        const currentTime = document.getElementById('current-time');
-        if (currentTime) {
-            currentTime.textContent = now.toLocaleTimeString('en-US', { hour12: false });
-        }
-    }
-
-    // Update the time every second
-    setInterval(updateTime, 1000);
 
     // Function to process terminal commands
     function processCommand(command) {

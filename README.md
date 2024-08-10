@@ -6,7 +6,8 @@
 
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Check Status](https://img.shields.io/github/workflow/status/berlintay/KeaysXYZ/Check%20Status)
+![Website](https://img.shields.io/website?url=http%3A%2F%2Fwww.keays.xyz)
+[![System Uptime](https://img.shields.io/pingpong/uptime/sp_85d37043ee50441680571174e89a7069)](https://keays.pingpong.host/)
 
 
  
@@ -18,18 +19,16 @@
 - [ ] Complete documentation
 
 
-### 📸 Screenshots
+## Live Screenshot
 
-<div align="center">
-  <img height="300px" width="auto" src="https://github.com/berlintay/KeaysBootXYZ_WEB/blob/master/media/mod.gif" alt="Demo">
-</div>
+![Live Screenshot](https://github.com/berlintay/KeaysXYZ/raw/master/media/screenshot.png)
 
 ### 📬 Contact
 
 For any questions or feedback, feel free to reach out:
 
 - **Email:** [contact@keays.xyz](mailto:contact@keays.xyz)
-- **Twitter:** [@KeaysXYZ](https://twitter.com/KeaysXYZ)
+- **Twitter:** [@KeaysXYZ](https://twitter.com/jtbrln)
 
 
 

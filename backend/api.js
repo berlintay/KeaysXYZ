@@ -1,12 +1,8 @@
 const express = require('express');
-const cors = require('cors');
 const axios = require('axios');
 const cheerio = require('cheerio');
 
 const app = express();
-
-// Use CORS middleware
-app.use(cors());
 
 app.get('/api/trending', async (req, res) => {
     try {

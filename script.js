@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 trendingContainer.appendChild(repoElement);
             });
         })
-        .catch(error => console.error('Error fetching GitHub trending data:', error));
 
     // Function to update the current time display
     function updateTime() {

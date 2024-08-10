@@ -28,7 +28,7 @@ jobs:
 
     # Run the scraper
     - name: Run scraper script
-      run: node ./backend/scrape.js # Ensure this script handles scraping and storing the data
+      run: backend/scrape.js # Ensure this script handles scraping and storing the data
 
     # If your scraper updates files that need to be committed back to the repository
     - name: Commit and push changes

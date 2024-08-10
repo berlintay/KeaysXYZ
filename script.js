@@ -1,22 +1,21 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Fetch the GitHub trending repositories feed and display it
-    fetch('/api/github-trending')
-        .then(response => response.json())
-        .then(data => {
-            const trendingContainer = document.getElementById('trending-repos');
-            trendingContainer.innerHTML = ''; // Clear existing content
-            data.forEach(repo => {
-                const repoElement = document.createElement('div');
-                repoElement.classList.add('repo');
-                repoElement.innerHTML = `
-                    <h3>${repo.organization} / ${repo.repository}</h3>
-                    <p>${repo.description}</p>
-                `;
-                trendingContainer.appendChild(repoElement);
-            });
-        })
-        .catch(error => console.error('Error fetching GitHub trending data:', error));
-
+fetch('/api/github-trending')
+    .then(response => response.json())
+    .then(data => {
+        const trendingContainer = document.getElementById('trending-repos');
+        trendingContainer.innerHTML = ''; // Clear existing content
+        data.forEach(repo => {
+            const repoElement = document.createElement('div');
+            repoElement.classList.add('repo');
+            repoElement.innerHTML = `
+                <h3>${repo.organization} / ${repo.repository}</h3>
+                <p>${repo.description}</p>
+            `;
+            trendingContainer.appendChild(repoElement);
+        });
+    })
+    .catch(error => console.error('Error fetching GitHub trending data:', error));
     // Function to update the current time display
     function updateTime() {
         const now = new Date();

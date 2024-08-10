@@ -58,21 +58,28 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Command input element not found!');
     }
-    function fetchTrendingRepositories() {
-        fetch('http://localhost:3000/api/trending')
-            .then(response => response.json())
-            .then(repos => {
-                const trendingRepos = document.getElementById('trending-repos');
-                trendingRepos.innerHTML = ''; // Clear the container before appending new items
-                repos.forEach(repo => {
-                    const repoItem = document.createElement('div');
-                    repoItem.className = 'repo-item';
-                    repoItem.innerHTML = `<strong>${repo.repoName}</strong><br>${repo.description}`;
-                    trendingRepos.appendChild(repoItem);
-                });
-            })
-            .catch(error => console.error('Error fetching trending repositories:', error));
-    }
+document.addEventListener("DOMContentLoaded", function() {
+    // Fetch the GitHub trending repositories feed and display it
+    fetch('/api/github-trending')
+        .then(response => response.json())
+        .then(data => {
+            const trendingContainer = document.getElementById('trending-repos');
+            trendingContainer.innerHTML = ''; // Clear existing content
+            data.forEach(repo => {
+                const repoElement = document.createElement('div');
+                repoElement.classList.add('repo');
+                repoElement.innerHTML = `
+                    <h3>${repo.organization} / ${repo.repository}</h3>
+                    <p>${repo.description}</p>
+                `;
+                trendingContainer.appendChild(repoElement);
+            });
+        })
+        .catch(error => console.error('Error fetching GitHub trending data:', error));
+
+    // Your existing script logic here...
+});
+
     function processCommand(command) {
         switch (command) {
             case 'help':

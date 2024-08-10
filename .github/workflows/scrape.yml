@@ -3,6 +3,7 @@ name: Scrape Data Every 7 Hours
 on:
   schedule:
     - cron: '0 */7 * * *'
+  workflow_dispatch:
 
 jobs:
   scrape:

@@ -121,13 +121,12 @@ Updated script.
     cursor: pointer;
 }
 #trending-container {
-    background-color: #282c34;
-    padding: 20px;
-    border-radius: 10px;
+    background-color: #1e1e1e; /* Adjust this to match your theme */
+    padding: 15px;
+    border-radius: 5px;
     color: white;
-    max-width: 400px;
-    margin: 20px auto;
-    font-family: 'IBM Plex Mono', monospace;
+    max-width: 300px;
+    margin-top: 20px;
 }
 
 #trending-repos .repo {
@@ -142,11 +141,11 @@ Updated script.
 #trending-repos .repo h3 {
     margin: 0;
     font-size: 1em;
-    color: #61dafb;
+    color: #61dafb; /* Adjust color to match your theme */
 }
 
 #trending-repos .repo p {
     margin: 5px 0 0;
-    font-size: 0.8em;
-    color: #bbb;
+    font-size: 0.85em;
+    color: #ccc; /* Adjust color to match your theme */
 }

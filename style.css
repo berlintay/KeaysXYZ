@@ -22,11 +22,15 @@ body, html {
     text-align: center;
 }
 
-    #links a {
-        color: var(--accent-color);
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
+#links a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#links a:hover {
+    color: var(--highlight-color);
+}
 
 #terminal-prompt {
     position: absolute;
@@ -38,20 +42,18 @@ body, html {
     position: absolute;
     top: 10px;
     right: 10px;
-    color: var(--terminal-green); /* Terminal green */
+    color: var(--terminal-green);
     font-family: monospace;
     background-color: rgba(0, 0, 0, 0.8);
     padding: 10px;
     border: 1px solid var(--terminal-green);
+    max-width: 300px;
+    border-radius: 5px;
 }
 
 .repo-item {
     margin-bottom: 5px;
-    color: var(--terminal-green); /* Ensure this matches the terminal green */
-}
-
-#links a:hover {
-    color: var(--highlight-color);
+    color: var(--terminal-green);
 }
 
 #terminal {
@@ -66,9 +68,9 @@ body, html {
     align-items: center;
 }
 
-    .prompt span {
-        color: var(--accent-color);
-    }
+.prompt span {
+    color: var(--accent-color);
+}
 
 #command-input {
     background-color: transparent;
@@ -80,7 +82,6 @@ body, html {
     caret-color: var(--main-text-color);
 }
 
-Updated script.
 .window {
     position: absolute;
     background-color: var(--main-bg-color);
@@ -120,14 +121,6 @@ Updated script.
     margin-right: 10px;
     cursor: pointer;
 }
-#trending-container {
-    background-color: #1e1e1e; /* Adjust this to match your theme */
-    padding: 15px;
-    border-radius: 5px;
-    color: white;
-    max-width: 300px;
-    margin-top: 20px;
-}
 
 #trending-repos .repo {
     padding: 10px 0;
@@ -141,11 +134,11 @@ Updated script.
 #trending-repos .repo h3 {
     margin: 0;
     font-size: 1em;
-    color: #61dafb; /* Adjust color to match your theme */
+    color: #61dafb;
 }
 
 #trending-repos .repo p {
     margin: 5px 0 0;
     font-size: 0.85em;
-    color: #ccc; /* Adjust color to match your theme */
+    color: #ccc;
 }

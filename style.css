@@ -1,59 +1,65 @@
-:root {
-    --main-bg-color: #1f1f28;
-    --main-text-color: #dcd7ba;
-    --accent-color: #7e9cd8;
-    --highlight-color: #957fb8;
-    --terminal-green: #00FF00;
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'IBM Plex Mono', monospace;
+    background-color: #1f1f28;
+    color: #dcd7ba;
+    height: 100%;
 }
 
-body, html {
-    background-color: var(--main-bg-color);
-    color: var(--main-text-color);
-    font-family: 'IBM Plex Mono', monospace;
+#boot-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#main-interface {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%; /* Ensure the main interface takes full height */
 }
 
 #ascii-header {
-    color: var(--highlight-color);
+    color: #957fb8;
     text-align: center;
-    margin: 20px 0;
-}
-
-#links {
-    text-align: center;
-}
-
-#links a {
-    color: var(--accent-color);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-#links a:hover {
-    color: var(--highlight-color);
-}
-
-#terminal-prompt {
-    position: absolute;
-    top: 150px;
-    left: 20px;
 }
 
 #trending-container {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    color: var(--terminal-green);
-    font-family: monospace;
+    top: 20px;
+    right: 20px;
     background-color: rgba(0, 0, 0, 0.8);
-    padding: 10px;
-    border: 1px solid var(--terminal-green);
-    max-width: 300px;
+    color: #00FF00;
+    padding: 15px;
+    border: 1px solid #00FF00;
     border-radius: 5px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
-.repo-item {
-    margin-bottom: 5px;
-    color: var(--terminal-green);
+#trending-repos .repo {
+    margin-bottom: 10px;
+}
+
+#links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#links a {
+    color: #7e9cd8;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+#links a:hover {
+    color: #957fb8;
 }
 
 #terminal {
@@ -79,37 +85,15 @@ body, html {
     color: #7e9cd8;
 }
 
-
 #command-input {
     background-color: transparent;
     border: none;
-    color: var(--main-text-color);
+    color: #dcd7ba;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 16px;
     outline: none;
-    caret-color: var(--main-text-color);
-}
-
-.window {
-    position: absolute;
-    background-color: var(--main-bg-color);
-    border: 1px solid var(--highlight-color);
-    padding: 10px;
-    min-width: 200px;
-    z-index: 1000;
-    display: none;
-}
-
-.window-header {
-    background-color: var(--accent-color);
-    color: var(--main-bg-color);
-    padding: 5px;
-    cursor: move;
-}
-
-.window-content {
-    padding: 10px;
-    color: var(--main-text-color);
+    width: 100%;
+    caret-color: #dcd7ba;
 }
 
 #taskbar {
@@ -117,36 +101,10 @@ body, html {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--main-bg-color);
-    color: var(--main-text-color);
+    background-color: #1f1f28;
+    color: #dcd7ba;
+    padding: 10px;
+    border-top: 1px solid #957fb8;
     display: flex;
-    align-items: center;
-    padding: 5px;
-    border-top: 1px solid var(--highlight-color);
-}
-
-.taskbar-item {
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-#trending-repos .repo {
-    padding: 10px 0;
-    border-bottom: 1px solid #444;
-}
-
-#trending-repos .repo:last-child {
-    border-bottom: none;
-}
-
-#trending-repos .repo h3 {
-    margin: 0;
-    font-size: 1em;
-    color: #61dafb;
-}
-
-#trending-repos .repo p {
-    margin: 5px 0 0;
-    font-size: 0.85em;
-    color: #ccc;
+    justify-content: center;
 }

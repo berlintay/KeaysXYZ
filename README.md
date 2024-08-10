@@ -6,7 +6,7 @@
 
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Check Status](https://img.shields.io/github/workflow/status/berlintay/KeaysXYZ/Check-Status)
+![Check Status](https://img.shields.io/badge/dynamic/yaml?url=github.com%2FKeaysXYZ%2F.github%2Fworkflows%2Fmain.yml)
 
 
  

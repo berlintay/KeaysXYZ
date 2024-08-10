@@ -1,11 +1,13 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Fetch the GitHub trending repositories feed and display it
-    fetch('/api/github-trending')
+  fetch('/trending_repos.json')
         .then(response => response.json())
         .then(data => {
             const trendingContainer = document.getElementById('trending-repos');
             trendingContainer.innerHTML = ''; // Clear existing content
-            data.forEach(repo => {
+
+            // Limit to top 10 repositories
+            const topTenRepos = data.slice(0, 10);
+
+            topTenRepos.forEach(repo => {
                 const repoElement = document.createElement('div');
                 repoElement.classList.add('repo');
                 repoElement.innerHTML = `
@@ -15,6 +17,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 trendingContainer.appendChild(repoElement);
             });
         })
+        .catch(error => console.error('Error fetching trending data:', error));
+
+    // Terminal command handling logic (assuming you have it in your script.js)
+    document.getElementById('command-input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            const command = event.target.value.trim();
+            processCommand(command);
+            event.target.value = ''; // Clear the input after processing
+        }
+    });
 
     // Function to update the current time display
     function updateTime() {

@@ -1,18 +1,9 @@
-:root {
-    --main-bg-color: #1f1f28;
-    --main-text-color: #dcd7ba;
-    --accent-color: #7e9cd8;
-    --highlight-color: #957fb8;
-    --terminal-green: #00FF00;
-}
-
 body, html {
     margin: 0;
     padding: 0;
     font-family: 'IBM Plex Mono', monospace;
-    background-color: var(--main-bg-color);
-    color: var(--main-text-color);
-    height: 100%;
+    background-color: #1f1f28;
+    color: #dcd7ba;
 }
 
 #boot-screen {
@@ -29,28 +20,12 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
+    margin-top: 50px;
 }
 
 #ascii-header {
-    color: var(--highlight-color);
+    color: #957fb8;
     text-align: center;
-    margin: 20px 0;
-}
-
-#links {
-    text-align: center;
-    margin-top: 20px;
-}
-
-#links a {
-    color: var(--accent-color);
-    text-decoration: none;
-    margin: 0 10px;
-}
-
-#links a:hover {
-    color: var(--highlight-color);
 }
 
 #trending-container {
@@ -58,9 +33,9 @@ body, html {
     top: 20px;
     right: 20px;
     background-color: rgba(0, 0, 0, 0.8);
-    color: var(--terminal-green);
+    color: #1f1f28;
     padding: 15px;
-    border: 1px solid var(--terminal-green);
+    border: 1px solid #010334;
     border-radius: 5px;
     width: 300px;
     max-height: 400px;
@@ -71,50 +46,52 @@ body, html {
     margin-bottom: 10px;
 }
 
-#trending-repos .repo h3 {
-    margin: 0;
-    font-size: 1em;
-    color: #61dafb; /* Adjusted color to match the theme */
+#links {
+    text-align: center;
+    margin-top: 20px;
 }
 
-#trending-repos .repo p {
-    margin: 5px 0 0;
-    font-size: 0.85em;
-    color: #ccc; /* Adjusted color to match the theme */
+#links a {
+    color: #7e9cd8;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+#links a:hover {
+    color: #957fb8;
 }
 
 #terminal {
-    flex-grow: 1;
     width: 80%;
+    height: 200px;
+    margin-top: 20px;
     padding: 10px;
-    background-color: black;
-    color: var(--terminal-green);
+    background-color: #1f1f28;
+    color: #81add4;
     overflow-y: auto;
-    border: 1px solid var(--terminal-green);
+    border: 1px solid #1f1f28;
     border-radius: 5px;
-    margin-bottom: 10px;
 }
 
 .prompt {
     display: flex;
     align-items: center;
-    width: 80%;
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .prompt span {
-    color: var(--accent-color);
+    color: #7e9cd8;
 }
 
 #command-input {
     background-color: transparent;
     border: none;
-    color: var(--main-text-color);
+    color: #dcd7ba;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 16px;
+    font-size: 24px;
     outline: none;
     width: 100%;
-    caret-color: var(--main-text-color);
+    caret-color: #dcd7ba;
 }
 
 #taskbar {
@@ -122,10 +99,10 @@ body, html {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--main-bg-color);
-    color: var(--main-text-color);
+    background-color: #1f1f28;
+    color: #dcd7ba;
     padding: 10px;
-    border-top: 1px solid var(--highlight-color);
+    border-top: 1px solid #957fb8;
     display: flex;
     justify-content: center;
 }

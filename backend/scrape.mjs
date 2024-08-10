@@ -28,4 +28,13 @@ async function fetchAndAppendData() {
     }
 }
 
-fetchAndAppendData();
+const startScraping = async () => {
+    console.log('Waiting for 1 minute before starting the scraping process...');
+    await new Promise(resolve => setTimeout(resolve, 1 * 60 * 1000)); // 1 minute in milliseconds
+    console.log('Starting the scraping process now...');
+    
+    // Call your scraping function here
+    fetchAndAppendData();
+};
+
+startScraping();

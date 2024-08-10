@@ -9,17 +9,23 @@ const scrapeTrendingRepos = async () => {
     const { data } = await axios.get('https://github.com/trending/unknown?since=daily');
     const $ = cheerio.load(data);
 
-    const trendingRepos = [];
+    const trendingRepos = document.querySelectorAll('article h2 a');
 
-    $('.Box-row').each((index, element) => {
-      const orgOrUserName = $(element).find('span.text-normal').text().trim();
-      const repoName = $(element).find('h1.h3 a').text().replace(orgOrUserName, '').trim();
-      const fullRepoName = `${orgOrUserName}${repoName}`;
-      const description = $(element).find('p.col-9').text().trim();
-      const repoUrl = $(element).find('h1.h3 a').attr('href').trim(); // Get the repository URL
-    
-      trendingRepos.push({ name: fullRepoName, description, url: `https://github.com${repoUrl}` });
-    });
+repoLinks.forEach(anchor => {
+  // Assuming each anchor tag is a repository link
+  const orgNameElement = anchor.querySelector('.text-normal');
+  let orgName = orgNameElement ? orgNameElement.textContent.trim() : 'No org name';
+  
+  // Remove the trailing slash from the organization name
+  orgName = orgName.replace('/', '').trim();
+  
+  // Extracting repository name by removing the organization name from the anchor text
+  const fullText = anchor.textContent.replace(orgName, '').trim();
+  const repoName = fullText.replace('/', '').trim();
+
+  console.log(`Organization: ${orgName}`);
+  console.log(`Repository: ${repoName}`);
+});
 
     return trendingRepos;
   } catch (error) {

@@ -29,7 +29,7 @@ body, html {
     border: 1px solid #010334;
     border-radius: 5px;
     width: 300px;
-    max-height: 600px;
+    max-height: calc(%100 - 12);
     overflow-y: auto;
 }
 

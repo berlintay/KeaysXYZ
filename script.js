@@ -17,6 +17,19 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error fetching GitHub trending data:', error));
 
+    // Function to update the current time display
+    function updateTime() {
+        const now = new Date();
+        const currentTime = document.getElementById('current-time');
+        if (currentTime) {
+            currentTime.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+        }
+    }
+
+    // Update the time every second
+    setInterval(updateTime, 1000);
+});
+
     // Function to process terminal commands
     function processCommand(command) {
         switch (command) {

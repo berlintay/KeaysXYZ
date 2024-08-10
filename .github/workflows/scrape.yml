@@ -21,13 +21,16 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    # If your scraper depends on an API running, then keep this step
     - name: Start API server
       run: |
-        nohup node ./backend/api.js & # Starts the API server in the background
+        nohup node ./api.js & # Starts the API server in the background
 
+    # Run the scraper
     - name: Run scraper script
-      run: node ./backend/scrape.js # Runs the scraping script
+      run: node ./scrape.js # Ensure this script handles scraping and storing the data
 
+    # If your scraper updates files that need to be committed back to the repository
     - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"

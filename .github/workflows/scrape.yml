@@ -28,7 +28,7 @@ jobs:
     # If your scraper depends on an API running, then keep this step
     - name: Start API server
       run: |
-        nohup node .backend/api.js & # Starts the API server in the background
+        nohup node backend/api.js & # Starts the API server in the background
         sleep 60
         
     # Run the scraper

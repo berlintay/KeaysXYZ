@@ -1,12 +1,12 @@
 <div align="center">
   <img height="60px" width="60px" src="https://github.com/berlintay/KeaysBootXYZ_WEB/blob/3f293d49d66c1503145d8d5540ceafca4c1d4265/media/image-removebg-preview.png" alt="Logo">
   <h1>Welcome to Keays XYZ Boot Homepage</h1>
-  <p><a href="http://www.keays.xyz" target="_blank">Visit the site here!</a></p>
+  <p><a href="https://www.keays.xyz" target="_blank">Visit the site here!</a></p>
 </div>
 
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Website](https://img.shields.io/website?url=http%3A%2F%2Fwww.keays.xyz)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
+![Website](https://img.shields.io/website?url=https%3A%2F%2Fwww.keays.xyz)
 [![System Uptime](https://img.shields.io/pingpong/uptime/sp_85d37043ee50441680571174e89a7069)](https://keays.pingpong.host/)
 
 
@@ -15,6 +15,7 @@
 
 - [x] Set up project repository
 - [x] Create initial project structure
+- [ ] Host on DigitalOcean
 - [ ] Add more features
 - [ ] Complete documentation
 

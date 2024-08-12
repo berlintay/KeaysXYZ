@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install SSH Client
       run: sudo apt-get install -y openssh-client
@@ -36,7 +36,7 @@ jobs:
         fi
 
         # Check Nginx Logs for Critical Errors
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "sudo tail -n 50 /var/log/nginx/error.log" > nginx_errors.txt
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@209.38.0.82 "sudo tail -n 50 /var/log/nginx/error.log" > nginx_errors.txt
         if grep -q 'critical' nginx_errors.txt; then
           echo "NGINX_CRITICAL_ERROR" > error.txt
         fi

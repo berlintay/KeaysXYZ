@@ -1,0 +1,79 @@
+name: Server Check and Auto Fix
+
+on:
+  workflow_dispatch:  # Allows manual triggering of the workflow
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour, adjust as needed
+
+jobs:
+  check-and-fix-server:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Install SSH Client
+      run: sudo apt-get install -y openssh-client
+
+    - name: Connect to Server and Check Status
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+        # Check Nginx Status
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "sudo systemctl status nginx" > status.txt || echo "NGINX_ERROR" > error.txt
+
+        # Check Disk Space
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "df -h" > diskspace.txt
+        if grep -q '100%' diskspace.txt; then
+          echo "DISK_FULL" > error.txt
+        fi
+
+        # Check Nginx Logs for Critical Errors
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "sudo tail -n 50 /var/log/nginx/error.log" > nginx_errors.txt
+        if grep -q 'critical' nginx_errors.txt; then
+          echo "NGINX_CRITICAL_ERROR" > error.txt
+        fi
+
+        # Check for SSL and Domain Configuration Errors
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "sudo nginx -t" > nginx_test.txt || echo "NGINX_CONFIG_ERROR" > error.txt
+        if grep -q "SSL" nginx_test.txt; then
+          echo "SSL_ERROR" > error.txt
+        fi
+        if grep -q "could not be resolved" nginx_test.txt; then
+          echo "DOMAIN_ERROR" > error.txt
+        fi
+
+    - name: Handle Errors and Auto Fix
+      run: |
+        if grep -q "NGINX_ERROR" error.txt; then
+          echo "Nginx is down. Restarting Nginx..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "sudo systemctl restart nginx"
+        fi
+
+        if grep -q "DISK_FULL" error.txt; then
+          echo "Disk is full. Clearing cache..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "sudo rm -rf /var/cache/nginx/*"
+        fi
+
+        if grep -q "NGINX_CRITICAL_ERROR" error.txt; then
+          echo "Critical Nginx error detected. Attempting to fix..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "sudo nginx -t && sudo systemctl reload nginx"
+        fi
+
+        if grep -q "SSL_ERROR" error.txt; then
+          echo "SSL error detected. Attempting to fix..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "sudo certbot renew --nginx"
+        fi
+
+        if grep -q "DOMAIN_ERROR" error.txt; then
+          echo "Domain configuration error detected. Attempting to fix..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "sudo sed -i 's/your_old_domain.com/your_new_domain.com/g' /etc/nginx/sites-available/default"
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no username@your_server_ip "sudo nginx -t && sudo systemctl reload nginx"
+        fi

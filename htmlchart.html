@@ -2,259 +2,145 @@
 <html>
 <head>
   <title>System Architecture and Directory Structure</title>
-  <script src="https://cdn.jsdelivr.net/npm/d3@7.0.0/dist/d3.min.js"></script>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .node {
-      cursor: pointer;
-      fill: #999;
+    body {
+      background-color: #16161d;
+      color: #d8d8d8;
+      font-family: 'Roboto', sans-serif;
+      font-size: 16px;
     }
 
-    .node:hover {
-      fill: #000;
+    .node {
+      cursor: pointer;
+    }
+
+    .node circle {
+      fill: #1f1f28;
+      stroke: #9d7cd8;
+      stroke-width: 1.5px;
+    }
+
+    .node:hover circle {
+      fill: #9d7cd8;
+    }
+
+    .node text {
+      font-size: 16px;
+      fill: #d8d8d8;
     }
 
     .link {
       fill: none;
-      stroke: #ccc;
-      stroke-width: 1.5px;
+      stroke: #7e9cd8;
+      stroke-width: 2px;
+    }
+
+    .link:hover {
+      stroke: #d8d8d8;
     }
   </style>
 </head>
 <body>
   <div id="chart"></div>
+
   <script>
-    // System Architecture
-    var systemData = {
-      "nodes": [
-        {"id": "User", "type": "user"},
-        {"id": "Nginx", "type": "server"},
-        {"id": "Browser", "type": "client"},
-        {"id": "NodeJS", "type": "server"},
-        {"id": "GitHubAPI", "type": "api"},
-        {"id": "D3", "type": "library"},
-        {"id": "JQueryTerminal", "type": "library"},
-        {"id": "LogFiles", "type": "storage"}
-      ],
-      "links": [
-        {"source": "User", "target": "Nginx", "label": "HTTP Requests"},
-        {"source": "Nginx", "target": "Browser", "label": "Serve Static Files"},
-        {"source": "Nginx", "target": "NodeJS", "label": "Forward API Requests"},
-        {"source": "NodeJS", "target": "GitHubAPI", "label": "Process Requests"},
-        {"source": "NodeJS", "target": "D3", "label": "Send Data"},
-        {"source": "NodeJS", "target": "JQueryTerminal", "label": "Send Data"},
-        {"source": "D3", "target": "Browser", "label": "Render Data"},
-        {"source": "JQueryTerminal", "target": "Browser", "label": "Display Terminal Interface"},
-        {"source": "NodeJS", "target": "LogFiles", "label": "Store Logs"},
-        {"source": "User", "target": "Browser", "label": "View & Interact"}
+    // Define the data
+    const systemData = {
+      name: "System Architecture",
+      children: [
+        // ... (your existing data)
       ]
     };
 
-    // Directory Structure
-    var directoryData = {
-      "name": "Root Directory",
-      "children": [
-        {"name": "css/", "children": [
-          {"name": "style.css", "type": "file"}
-        ]},
-        {"name": "js/", "children": [
-          {"name": "app.js", "type": "file"}
-        ]},
-        {"name": "lib/", "children": [
-          {"name": "terminal.js", "type": "file"},
-          {"name": "utils.js", "type": "file"}
-        ]}
+    const directoryData = {
+      name: "Root Directory",
+      children: [
+        // ... (your existing data)
       ]
     };
+
+    // Set up the chart dimensions
+    const width = 960;
+    const height = 500;
+
+    // Create the chart
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    // Define the tree layout
+    const tree = d3.tree()
+      .size([width - 100, height - 100]);
 
     // Create the system architecture chart
-    var systemWidth = 800;
-    var systemHeight = 400;
+    const systemRoot = d3.hierarchy(systemData);
+    const systemNodes = tree(systemRoot);
 
-    var systemSvg = d3.select("#chart")
-      .append("svg")
-      .attr("width", systemWidth)
-      .attr("height", systemHeight);
+    const systemLink = svg.selectAll(".link")
+      .data(systemNodes.links())
+      .enter().append("path")
+      .attr("class", "link")
+      .attr("d", d3.linkHorizontal()
+        .x(d => d.y)
+        .y(d => d.x));
 
-    var systemSimulation = d3.forceSimulation(systemData.nodes)
-      .force("link", d3.forceLink(systemData.links).distance(100))
-      .force("charge", d3.forceManyBody().strength(-200))
-      .force("center", d3.forceCenter(systemWidth / 2, systemHeight / 2));
-
-    var systemLink = systemSvg.append("g")
-      .attr("class", "links")
-      .selectAll("line")
-      .data(systemData.links)
-      .enter().append("line")
-      .attr("class", "link");
-
-    var systemNode = systemSvg.append("g")
-      .attr("class", "nodes")
-      .selectAll("circle")
-      .data(systemData.nodes)
-      .enter().append("circle")
+    const systemNode = svg.selectAll(".node")
+      .data(systemNodes.descendants())
+      .enter().append("g")
       .attr("class", "node")
-      .attr("r", 10)
-      .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
+      .attr("transform", d => `translate(${d.y},${d.x})`);
 
-    systemNode.append("title")
-      .text(function(d) { return d.id; });
+    systemNode.append("circle")
+      .attr("r", 6);
 
-    systemSimulation
-      .on("tick", ticked);
-
-    function ticked() {
-      systemLink
-        .attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
-
-      systemNode
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
-    }
-
-    function dragstarted(d) {
-      if (!d3.event.active) systemSimulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-
-    function dragged(d) {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    }
-
-    function dragended(d) {
-      if (!d3.event.active) systemSimulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
+    systemNode.append("text")
+      .attr("dx", d => d.children ? -12 : 12)
+      .attr("dy", 5)
+      .attr("text-anchor", d => d.children ? "end" : "start")
+      .text(d => d.data.name);
 
     // Create the directory structure chart
-    var directoryWidth = 600;
-    var directoryHeight = 400;
+    const directoryRoot = d3.hierarchy(directoryData);
+    const directoryNodes = tree(directoryRoot);
 
-    var directorySvg = d3.select("#chart")
-      .append("svg")
-      .attr("width", directoryWidth)
-      .attr("height", directoryHeight);
+    const directoryLink = svg.selectAll(".link")
+      .data(directoryNodes.links())
+      .enter().append("path")
+      .attr("class", "link")
+      .attr("d", d3.linkHorizontal()
+        .x(d => d.y)
+        .y(d => d.x));
 
-    var directoryTree = d3.tree()
-      .size([directoryHeight, directoryWidth - 160]);
+    const directoryNode = svg.selectAll(".node")
+      .data(directoryNodes.descendants())
+      .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", d => `translate(${d.y},${d.x})`);
 
-    var root = d3.hierarchy(directoryData);
-    root.x0 = directoryHeight / 2;
-    root.y0 = 0;
+    directoryNode.append("circle")
+      .attr("r", 6);
 
-    update(root);
+    directoryNode.append("text")
+      .attr("dx", d => d.children ? -12 : 12)
+      .attr("dy", 5)
+      .attr("text-anchor", d => d.children ? "end" : "start")
+      .text(d => d.data.name);
 
-    function update(source) {
-      var treeData = directoryTree(root);
+    // Add labels to the chart
+    svg.append("text")
+      .attr("x", 20)
+      .attr("y", 20)
+      .text("System Architecture");
 
-      var nodes = treeData.descendants(),
-          links = treeData.descendants().slice(1);
-
-      // Nodes
-      var node = directorySvg.selectAll("g.node")
-        .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-      var nodeEnter = node.enter().append("g")
-        .attr("class", "node")
-        .attr("transform", function(d) {
-          return "translate(" + source.y0 + "," + source.x0 + ")";
-        })
-        .on("click", click);
-
-      nodeEnter.append("circle")
-        .attr("class", "node")
-        .attr("r", 1e-6)
-        .style("fill", function(d) {
-          return d._children ? "lightsteelblue" : "#fff";
-        });
-
-      nodeEnter.append("text")
-        .attr("dy", ".35em")
-        .attr("x", function(d) {
-          return d.children || d._children ? -13 : 13;
-        })
-        .attr("text-anchor", function(d) {
-          return d.children || d._children ? "end" : "start";
-        })
-        .text(function(d) { return d.data.name; });
-
-      // Links
-      var link = directorySvg.selectAll("path.link")
-        .data(links, function(d) { return d.id; });
-
-      var linkEnter = link.enter().insert("path", "g")
-        .attr("class", "link")
-        .attr("d", function(d) {
-          var o = {x: source.x0, y: source.y0};
-          return diagonal(o, o);
-        });
-
-      // Transition nodes to their new position.
-      var nodeUpdate = nodeEnter.merge(node);
-
-      nodeUpdate.transition()
-        .duration(750)
-        .attr("transform", function(d) {
-          return "translate(" + d.y + "," + d.x + ")";
-        });
-
-      nodeUpdate.select("circle")
-        .attr("r", 4.5)
-        .style("fill", function(d) {
-          return d._children ? "lightsteelblue" : "#fff";
-        });
-
-      // Transition exiting nodes to the parent's new position.
-      var nodeExit = node.exit().transition()
-        .duration(750)
-        .attr("transform", function(d) {
-          return "translate(" + source.y + "," + source.x + ")";
-        })
-        .remove();
-
-      nodeExit.select("circle")
-        .attr("r", 1e-6);
-
-      nodeExit.select("text")
-        .style("fill-opacity", 1e-6);
-
-      // Transition the links to their new position.
-      link.transition()
-        .duration(750)
-        .attr("d", function(d) { return diagonal(d, d.parent); });
-
-      // Stash the old positions for transition.
-      root.each(function(d) {
-        d.x0 = d.x;
-        d.y0 = d.y;
-      });
-    }
-
-    function diagonal(s, d) {
-      return `M ${s.y} ${s.x}
-              C ${(s.y + d.y) / 2} ${s.x},
-                ${(s.y + d.y) / 2} ${d.x},
-                ${d.y} ${d.x}`;
-    }
-
-    function click(d) {
-      if (d.children) {
-        d._children = d.children;
-        d.children = null;
-      } else {
-        d.children = d._children;
-        d._children = null;
-      }
-      update(d);
-    }
+    svg.append("text")
+      .attr("x", 20)
+      .attr("y", height - 20)
+      .text("Directory Structure");
   </script>
 </body>
 </html>

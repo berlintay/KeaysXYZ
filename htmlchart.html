@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>System Architecture and Directory Structure</title>
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +14,21 @@
       color: #d8d8d8;
       font-family: 'Roboto', sans-serif;
       font-size: 16px;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    #chart {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    svg {
+      width: 100%;
+      height: 50%;
     }
 
     .node {
@@ -29,7 +46,7 @@
     }
 
     .node text {
-      font-size: 16px;
+      font-size: 14px;
       fill: #d8d8d8;
     }
 
@@ -42,6 +59,12 @@
     .link:hover {
       stroke: #d8d8d8;
     }
+
+    .chart-title {
+      font-size: 18px;
+      font-weight: bold;
+      fill: #d8d8d8;
+    }
   </style>
 </head>
 <body>
@@ -52,95 +75,121 @@
     const systemData = {
       name: "System Architecture",
       children: [
-        // ... (your existing data)
+        {
+          name: "Frontend",
+          children: [
+            { name: "UI Components" },
+            { name: "State Management" },
+            { name: "Routing" }
+          ]
+        },
+        {
+          name: "Backend",
+          children: [
+            { name: "API" },
+            { name: "Database" },
+            { name: "Authentication" }
+          ]
+        },
+        {
+          name: "Infrastructure",
+          children: [
+            { name: "Servers" },
+            { name: "Load Balancer" },
+            { name: "Caching" }
+          ]
+        }
       ]
     };
 
     const directoryData = {
       name: "Root Directory",
       children: [
-        // ... (your existing data)
+        {
+          name: "src",
+          children: [
+            { name: "components" },
+            { name: "pages" },
+            { name: "utils" }
+          ]
+        },
+        {
+          name: "public",
+          children: [
+            { name: "images" },
+            { name: "fonts" }
+          ]
+        },
+        { name: "package.json" },
+        { name: "README.md" }
       ]
     };
 
-    // Set up the chart dimensions
-    const width = 960;
-    const height = 500;
+    function createChart(data, container, title) {
+      const margin = { top: 40, right: 90, bottom: 50, left: 90 };
+      const width = container.clientWidth - margin.left - margin.right;
+      const height = container.clientHeight - margin.top - margin.bottom;
 
-    // Create the chart
-    const svg = d3.select("#chart")
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height);
+      const svg = d3.select(container)
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Define the tree layout
-    const tree = d3.tree()
-      .size([width - 100, height - 100]);
+      const tree = d3.tree().size([height, width - 160]);
 
-    // Create the system architecture chart
-    const systemRoot = d3.hierarchy(systemData);
-    const systemNodes = tree(systemRoot);
+      const root = d3.hierarchy(data);
+      const nodes = tree(root);
 
-    const systemLink = svg.selectAll(".link")
-      .data(systemNodes.links())
-      .enter().append("path")
-      .attr("class", "link")
-      .attr("d", d3.linkHorizontal()
-        .x(d => d.y)
-        .y(d => d.x));
+      const link = svg.selectAll(".link")
+        .data(nodes.links())
+        .enter().append("path")
+        .attr("class", "link")
+        .attr("d", d3.linkHorizontal()
+          .x(d => d.y)
+          .y(d => d.x));
 
-    const systemNode = svg.selectAll(".node")
-      .data(systemNodes.descendants())
-      .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", d => `translate(${d.y},${d.x})`);
+      const node = svg.selectAll(".node")
+        .data(nodes.descendants())
+        .enter().append("g")
+        .attr("class", "node")
+        .attr("transform", d => `translate(${d.y},${d.x})`);
 
-    systemNode.append("circle")
-      .attr("r", 6);
+      node.append("circle")
+        .attr("r", 6);
 
-    systemNode.append("text")
-      .attr("dx", d => d.children ? -12 : 12)
-      .attr("dy", 5)
-      .attr("text-anchor", d => d.children ? "end" : "start")
-      .text(d => d.data.name);
+      node.append("text")
+        .attr("dx", d => d.children ? -12 : 12)
+        .attr("dy", 5)
+        .attr("text-anchor", d => d.children ? "end" : "start")
+        .text(d => d.data.name);
 
-    // Create the directory structure chart
-    const directoryRoot = d3.hierarchy(directoryData);
-    const directoryNodes = tree(directoryRoot);
+      svg.append("text")
+        .attr("class", "chart-title")
+        .attr("x", width / 2)
+        .attr("y", -20)
+        .attr("text-anchor", "middle")
+        .text(title);
+    }
 
-    const directoryLink = svg.selectAll(".link")
-      .data(directoryNodes.links())
-      .enter().append("path")
-      .attr("class", "link")
-      .attr("d", d3.linkHorizontal()
-        .x(d => d.y)
-        .y(d => d.x));
+    function createCharts() {
+      const chartContainer = document.getElementById("chart");
+      const systemContainer = document.createElement("div");
+      const directoryContainer = document.createElement("div");
+      
+      chartContainer.appendChild(systemContainer);
+      chartContainer.appendChild(directoryContainer);
 
-    const directoryNode = svg.selectAll(".node")
-      .data(directoryNodes.descendants())
-      .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", d => `translate(${d.y},${d.x})`);
+      createChart(systemData, systemContainer, "System Architecture");
+      createChart(directoryData, directoryContainer, "Directory Structure");
+    }
 
-    directoryNode.append("circle")
-      .attr("r", 6);
-
-    directoryNode.append("text")
-      .attr("dx", d => d.children ? -12 : 12)
-      .attr("dy", 5)
-      .attr("text-anchor", d => d.children ? "end" : "start")
-      .text(d => d.data.name);
-
-    // Add labels to the chart
-    svg.append("text")
-      .attr("x", 20)
-      .attr("y", 20)
-      .text("System Architecture");
-
-    svg.append("text")
-      .attr("x", 20)
-      .attr("y", height - 20)
-      .text("Directory Structure");
+    window.addEventListener("load", createCharts);
+    window.addEventListener("resize", () => {
+      document.getElementById("chart").innerHTML = "";
+      createCharts();
+    });
   </script>
 </body>
 </html>

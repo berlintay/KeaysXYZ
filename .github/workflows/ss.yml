@@ -28,7 +28,7 @@ jobs:
         run: |
           node capture-screenshot.js
         env:
-          WEBSITE_URL: 'https://www.keays.xyz'
+          WEBSITE_URL: 'https://keays.pro'
 
       - name: Upload Screenshot
         uses: actions/upload-artifact@v4

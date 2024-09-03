@@ -1,7 +1,7 @@
 <div align="center">
   <img height="60px" width="60px" src="https://github.com/berlintay/KeaysBootXYZ_WEB/blob/3f293d49d66c1503145d8d5540ceafca4c1d4265/media/image-removebg-preview.png" alt="Logo">
   <h1>Welcome to Keays XYZ Boot Homepage</h1>
-  <p><a href="https://www.keays.xyz" target="_blank">Visit the site here!</a></p>
+  <p><a href="http://www.keays.xyz" target="_blank">Visit the site here!</a></p>
 </div>
 
 

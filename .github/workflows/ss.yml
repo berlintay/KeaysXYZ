@@ -5,7 +5,7 @@ on:
     branches:
       - master
   schedule:
-    - cron: ' 0 */3 * * *'  # Runs every hour (optional)
+    - cron: '0 */3 * * *'  # Runs every 3 hours
 
 jobs:
   capture:

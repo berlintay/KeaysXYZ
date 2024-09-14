@@ -14,7 +14,7 @@ jobs:
         id: check
         run: |
           status=$(curl -Is http://www.keays.xyz | head -n 1 | grep "200 OK" || echo "down")
-          echo "status=$status" >> $GITHUB_ENV
+          echo "status=$status" >> $GITHUB_OUTPUT
 
       - name: Notify via SMS if website status
         if: always()  # Always run this step
@@ -24,16 +24,16 @@ jobs:
           TWILIO_PHONE_NUMBER: ${{ secrets.TWILIO_PHONE_NUMBER }}
           TO_PHONE_NUMBER: ${{ secrets.TO_PHONE_NUMBER }}
         run: |
-          if [ "$status" = "down" ]; then
+          if [ "${{ steps.check.outputs.status }}" = "down" ]; then
             message="Website is down!"
           else
             message="Website is up and running."
           fi
-          curl -X POST "https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json" \
+          curl -X POST "https://api.twilio.com/2010-04-01/Accounts/$TWILIO_ACCOUNT_SID/Messages.json" \
           --data-urlencode "Body=$message" \
-          --data-urlencode "From=${TWILIO_PHONE_NUMBER}" \
-          --data-urlencode "To=${TO_PHONE_NUMBER}" \
-          -u "${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}"
+          --data-urlencode "From=$TWILIO_PHONE_NUMBER" \
+          --data-urlencode "To=$TO_PHONE_NUMBER" \
+          -u "$TWILIO_ACCOUNT_SID:$TWILIO_AUTH_TOKEN"
 
       - name: Notify via Pushover
         if: always()  # Always run this step
@@ -41,13 +41,13 @@ jobs:
           PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
           PUSHOVER_API_TOKEN: ${{ secrets.PUSHOVER_API_TOKEN }}
         run: |
-          if [ "$status" = "down" ]; then
+          if [ "${{ steps.check.outputs.status }}" = "down" ]; then
             message="Website is down!"
           else
             message="Website is up and running."
           fi
           curl -s \
-            --form-string "token=${PUSHOVER_API_TOKEN}" \
-            --form-string "user=${PUSHOVER_USER_KEY}" \
-            --form-string "message=${message}" \
+            --form-string "token=$PUSHOVER_API_TOKEN" \
+            --form-string "user=$PUSHOVER_USER_KEY" \
+            --form-string "message=$message" \
             https://api.pushover.net/1/messages.json

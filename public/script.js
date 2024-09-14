@@ -47,7 +47,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 appendToTerminal("<ul><li>Pretty much anything you can think of</li><li>To an extent 😂</li><li>UI/UX Design</li><li>E-commerce Solutions</li><li>Need a whole setup for a website/business idea? That too.</li></ul>", true);
                 break;
             case 'portfolio':
-                appendToTerminal("<p>You can check out my Github: <a href='https://github.com/berlintay' target='_blank'>https://github.com/berlintay</a></p>", true);
+                appendToTerminal(`
+                    <p>You can check out my Github: <a href='https://github.com/berlintay' target='_blank'>https://github.com/berlintay</a></p>
+                `, true);
                 break;
             case 'contact':
                 appendToTerminal('Contact me?!😫');

@@ -6,9 +6,10 @@ on:
   workflow_dispatch: # Allows manual triggering
 
 jobs:
+
   scrape:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -18,28 +19,31 @@ jobs:
       with:
         node-version: '20' # Using Node.js version 20
 
-    - name: Install dependencies
-      run: npm install
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
 
+    - name: Install dependencies
+      run: npm ci
 
     - name: Get chmod
-      run: chmod +x backend/scrape.mjs # brev eat a fokin deck
+      run: chmod +x backend/scrape.mjs
 
-    # If your scraper depends on an API running, then keep this step
     - name: Start API server
       run: |
         nohup node backend/api.js & # Starts the API server in the background
-        sleep 60
-        
-    # Run the scraper
-    - name: Run scraper script # Eat a d**ck
-      run: node  backend/scrape.mjs # Ensure this script handles scraping and storing the data
+        sleep 60 # Wait for the server to start
 
-    # If your scraper updates files that need to be committed back to the repository
+    - name: Run scraper script
+      run: node backend/scrape.mjs # Ensure this script handles scraping and storing the data
+
     - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "Auto-update data file"
-        git push
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update data file" && git push)

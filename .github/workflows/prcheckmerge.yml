@@ -108,7 +108,8 @@ jobs:
           -d '{"ref":"main"}'
 
     - name: Run site via Codespace
-      uses: github/codespaces/create-codespace-for-repo@v0.1.0
+
+      uses: github/codespaces/create-codespace-for-repo@v1
       with:
         repo: ${{ github.repository }}
         ref: main

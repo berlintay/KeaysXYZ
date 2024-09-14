@@ -1,72 +1,23 @@
-[
-  {
-    "organization": "hacksider",
-    "repository": "Deep-Live-Cam",
-    "description": "real time face swap and one-click video deepfake with only a single image (uncensored)"
-  },
-  {
-    "organization": "teableio",
-    "repository": "teable",
-    "description": "✨ The Next Gen Airtable Alternative: No-Code Postgres"
-  },
-  {
-    "organization": "raspberrypi",
-    "repository": "pico-sdk",
-    "description": "No description"
-  },
-  {
-    "organization": "NaiboWang",
-    "repository": "EasySpider",
-    "description": "A visual no-code/code-free web crawler/spider易采集：一个可视化浏览器自动化测试/数据采集/爬虫软件，可以无代码图形化的设计和执行爬虫任务。别名：ServiceWrapper面向Web应用的智能化服务封装系统。"
-  },
-  {
-    "organization": "penpot",
-    "repository": "penpot",
-    "description": "Penpot: The open-source design tool for design and code collaboration"
-  },
-  {
-    "organization": "OpenBMB",
-    "repository": "MiniCPM-V",
-    "description": "MiniCPM-V 2.6: A GPT-4V Level MLLM for Single Image, Multi Image and Video on Your Phone"
-  },
-  {
-    "organization": "Stirling-Tools",
-    "repository": "Stirling-PDF",
-    "description": "#1 Locally hosted web application that allows you to perform various operations on PDF files"
-  },
-  {
-    "organization": "massgravel",
-    "repository": "Microsoft-Activation-Scripts",
-    "description": "A Windows and Office activator using HWID / Ohook / KMS38 / Online KMS activation methods, with a focus on open-source code and fewer antivirus detections."
-  },
-  {
-    "organization": "MahmoudAshraf97",
-    "repository": "whisper-diarization",
-    "description": "Automatic Speech Recognition with Speaker Diarization based on OpenAI Whisper"
-  },
-  {
-    "organization": "getsentry",
-    "repository": "sentry",
-    "description": "Developer-first error tracking and performance monitoring"
-  },
-  {
-    "organization": "cocos",
-    "repository": "cocos-engine",
-    "description": "Cocos simplifies game creation and distribution with Cocos Creator, a free, open-source, cross-platform game engine. Empowering millions of developers to create high-performance, engaging 2D/3D games and instant web entertainment."
-  },
-  {
-    "organization": "Avaiga",
-    "repository": "taipy",
-    "description": "Turns Data and AI algorithms into production-ready web applications in no time."
-  },
-  {
-    "organization": "goldbergyoni",
-    "repository": "nodebestpractices",
-    "description": "✅ The Node.js best practices list (July 2024)"
-  },
-  {
-    "organization": "onceupon",
-    "repository": "Bash-Oneliner",
-    "description": "A collection of handy Bash One-Liners and terminal tricks for data processing and Linux system maintenance."
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios');
+
+const TRENDING_REPOS_URL = 'https://ghapi.huchen.dev/repositories';
+const TRENDING_REPOS_FILE = path.join(__dirname, '..', 'public', 'trending_repos.json');
+
+async function fetchTrendingRepos() {
+  try {
+    const response = await axios.get(TRENDING_REPOS_URL);
+    const trendingRepos = response.data;
+    saveTrendingRepos(trendingRepos);
+  } catch (error) {
+    console.error('Error fetching trending repos:', error);
   }
-]
+}
+
+function saveTrendingRepos(trendingRepos) {
+  const jsonData = JSON.stringify(trendingRepos, null, 2);
+  fs.writeFileSync(TRENDING_REPOS_FILE, jsonData);
+}
+
+fetchTrendingRepos();

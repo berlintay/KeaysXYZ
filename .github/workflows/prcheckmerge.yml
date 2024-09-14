@@ -108,9 +108,10 @@ jobs:
           -d '{"ref":"main"}'
 
     - name: Run site via Codespace
-      uses: github/codespaces-action@v1
+      uses: github/codespaces/create-codespace-for-repo@v1
       with:
-        codespace_name: ${{ github.event.pull_request.number }}
-        codespace_repo: ${{ github.event.repository.name }}
-        codespace_ref: main
-        codespace_command: npm start
+        repo: ${{ github.repository }}
+        ref: main
+        machine: standardLinux
+        display_name: ${{ github.event.pull_request.number }}
+        post_create_command: npm start

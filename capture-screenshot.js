@@ -1,20 +1,20 @@
 const puppeteer = require('puppeteer');
 
 async function captureScreenshot(url) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    headless: true,
+  });
   const page = await browser.newPage();
 
-
-  await page.goto(url);
-
-
-  await new Promise(resolve => setTimeout(resolve, 15000));  
-
-
-  await page.screenshot({ path: 'media/screenshot.png' });
-
-
-  await browser.close();
+  try {
+    await page.goto(url, { waitUntil: 'networkidle0' });
+    await page.screenshot({ path: 'media/screenshot.png', fullPage: true });
+  } catch (error) {
+    console.error('Error capturing screenshot:', error);
+  } finally {
+    await browser.close();
+  }
 }
 
 captureScreenshot('http://www.keays.xyz');

@@ -1,63 +1,34 @@
-export async function fetchTrendingRepos(): Promise<RepoType[]> {
-    try {
-        const response = await fetch('/backend/api/trending');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const repos: RepoType[] = await response.json();
-        return repos;
-    } catch (error) {
-        console.error('Error fetching trending repositories:', error);
-        throw error;
-    }
-}
-if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-}
-function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+const axios = require('axios');
+const cheerio = require('cheerio');
+
+async function fetchTrendingRepos() {
+  try {
+    const response = await axios.get('https://github.com/trending', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+      }
+    });
+
+    const $ = cheerio.load(response.data);
+    const repos = [];
+
+    $('article.Box-row').each((index, element) => {
+      const $element = $(element);
+      const repo = {
+        name: $element.find('h1 a').text().trim(),
+        description: $element.find('p').text().trim(),
+        url: 'https://github.com' + $element.find('h1 a').attr('href'),
+        stars: $element.find('a[href*="/stargazers"]').text().trim(),
+        language: $element.find('[itemprop="programmingLanguage"]').text().trim()
+      };
+      repos.push(repo);
+    });
+
+    return repos;
+  } catch (error) {
+    console.error('Error fetching trending repositories:', error);
+    throw error;
+  }
 }
 
-export async function fetchTrendingRepos() {
-    try {
-        const responsePromise = fetch('/backend/api/trending');
-        const timeoutPromise = timeout(5000); // 5 seconds timeout
-        const response = await Promise.race([responsePromise, timeoutPromise]);
-
-        if (!response || !response.ok) {
-            throw new Error(`Request failed or timed out.`);
-        }
-
-        const repos = await response.json();
-        return repos;
-    } catch (error) {
-        console.error('Error fetching trending repositories:', error);
-        throw error;
-    }
-}
-async function fetchWithRetry(url, options = {}, retries = 3, backoff = 300) {
-    try {
-        const response = await fetch(url, options);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        return response;
-    } catch (error) {
-        if (retries > 0) {
-            console.warn(`Retrying... attempts left: ${retries}`);
-            await new Promise(resolve => setTimeout(resolve, backoff));
-            return fetchWithRetry(url, options, retries - 1, backoff * 2);
-        } else {
-            throw error;
-        }
-    }
-}
-
-export async function fetchTrendingRepos() {
-    try {
-        const response = await fetchWithRetry('/backend/api/trending');
-        const repos = await response.json();
-        return repos;
-    } catch (error) {
-        console.error('Error fetching trending repositories:', error);
-        throw error;
-    }
-}
+module.exports = { fetchTrendingRepos };

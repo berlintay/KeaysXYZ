@@ -1,61 +1,48 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const fs = require('fs');
+const fs = require('fs').promises;
 const cron = require('node-cron');
 
 const DATA_FILE = './trending_repos.json';
 
-const scrapeTrendingRepos = async () => {
+async function scrapeTrendingRepos() {
   try {
-    const { data } = await axios.get('https://github.com/trending');
+    const { data } = await axios.get('https://github.com/trending', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+      }
+    });
     const $ = cheerio.load(data);
 
-    const trendingRepos = [];
-
-    const repoArticles = $('article.Box-row');
-
-    repoArticles.each((index, article) => {
+    return $('article.Box-row').map((_, article) => {
       const anchor = $(article).find('h2 a');
-
-      // Extract organization name
       const orgNameElement = anchor.find('.text-normal');
-      let orgName = orgNameElement.text().trim() || 'No org name';
-      orgName = orgName.replace('/', '').trim();
-
-      // Extract repository name
+      const orgName = orgNameElement.text().trim().replace('/', '').trim() || 'No org name';
       const fullText = anchor.text().replace(orgName, '').trim();
       const repoName = fullText.replace('/', '').trim();
+      const description = $(article).find('p').text().trim() || 'No description';
 
-      // Extract description (assuming it's in a <p> tag)
-      const descriptionElement = $(article).find('p');
-      const description = descriptionElement.text().trim() || 'No description';
-
-      // Add the repo details to the array
-      trendingRepos.push({
+      return {
         organization: orgName,
         repository: repoName,
         description: description,
-      });
-    });
-
-    return trendingRepos;
+      };
+    }).get();
   } catch (error) {
     console.error('Error scraping trending repositories:', error);
     return [];
   }
-};
+}
 
-const saveTrendingReposToFile = async () => {
+async function saveTrendingReposToFile() {
   try {
     const repos = await scrapeTrendingRepos();
-
-    // Write the scraped data to a JSON file
-    fs.writeFileSync(DATA_FILE, JSON.stringify(repos, null, 2), 'utf-8');
+    await fs.writeFile(DATA_FILE, JSON.stringify(repos, null, 2), 'utf-8');
     console.log('Trending repositories saved successfully.');
   } catch (error) {
     console.error('Error saving trending repositories:', error);
   }
-};
+}
 
 // Schedule the task to run every 5 hours
 cron.schedule('0 */5 * * *', () => {
@@ -65,3 +52,5 @@ cron.schedule('0 */5 * * *', () => {
 
 // Run the function once when the script starts
 saveTrendingReposToFile();
+
+module.exports = { scrapeTrendingRepos, saveTrendingReposToFile };

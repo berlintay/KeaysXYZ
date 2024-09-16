@@ -1,13 +1,25 @@
-const CAMERA_FOV = 70;
-const CAMERA_DISTANCE = 500;
-const SPHERE_RADIUS = 200;
+const cache = new Map();
 
-try {
-  effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
-} catch (error) {
-  console.error('Failed to create AsciiEffect:', error);
-  // Fallback or user notification
+// eslint-disable-next-line no-unused-vars
+async function createAsciiEffect(renderer) {
+  try {
+    // Check if the AsciiEffect module is already cached
+    if (!cache.has('AsciiEffect')) {
+      const { AsciiEffect } = await import('path/to/AsciiEffect');
+      cache.set('AsciiEffect', AsciiEffect);
+    }
+
+    const AsciiEffect = cache.get('AsciiEffect');
+    const effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
+
+    // Destructure the style properties for better readability
+    const { style } = effect.domElement;
+    style.color = 'white';
+    style.backgroundColor = 'black';
+
+    return effect;
+  } catch (error) {
+    // Throw a custom error for better error handling
+    throw new Error(`Failed to create AsciiEffect: ${error.message}`);
+  }
 }
-
-effect.domElement.style.color = 'white';
-effect.domElement.style.backgroundColor = 'black';

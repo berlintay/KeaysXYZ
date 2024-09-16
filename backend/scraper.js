@@ -1,9 +1,6 @@
+/* eslint-disable no-undef */
 const axios = require('axios');
 const cheerio = require('cheerio');
-const fs = require('fs').promises;
-const cron = require('node-cron');
-
-const DATA_FILE = './trending_repos.json';
 
 async function scrapeTrendingRepos() {
   try {
@@ -34,23 +31,4 @@ async function scrapeTrendingRepos() {
   }
 }
 
-async function saveTrendingReposToFile() {
-  try {
-    const repos = await scrapeTrendingRepos();
-    await fs.writeFile(DATA_FILE, JSON.stringify(repos, null, 2), 'utf-8');
-    console.log('Trending repositories saved successfully.');
-  } catch (error) {
-    console.error('Error saving trending repositories:', error);
-  }
-}
-
-// Schedule the task to run every 5 hours
-cron.schedule('0 */5 * * *', () => {
-  console.log('Fetching and saving trending repositories...');
-  saveTrendingReposToFile();
-});
-
-// Run the function once when the script starts
-saveTrendingReposToFile();
-
-module.exports = { scrapeTrendingRepos, saveTrendingReposToFile };
+module.exports = scrapeTrendingRepos;

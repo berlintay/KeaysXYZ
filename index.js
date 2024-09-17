@@ -1,6 +1,6 @@
             import puppeteer from 'puppeteer';
 
-            // eslint-disable-next-line no-unused-vars
+            
             async function captureScreenshot(url) {
               const browser = await puppeteer.launch({
                 args: ['--no-sandbox', '--disable-setuid-sandbox'],

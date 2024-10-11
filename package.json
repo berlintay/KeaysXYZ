@@ -8,7 +8,7 @@
     "node-fetch": "^3.3.2",
     "openai": "^4.55.4",
     "pupeteer": "^0.0.1",
-    "puppeteer": "^23.5.2"
+    "puppeteer": "^23.5.3"
   },
   "devDependencies": {
     "eslint": "^9.9.0",

@@ -14,10 +14,14 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         body.terminal {
-            min-height: 100%;
+            width: 100%;
+            height: 100%;
             background-color: #000;
             color: #00FF00;
             font-family: 'IBM Plex Mono', monospace;
@@ -27,24 +31,28 @@
         }
 
         .terminal-container {
-            width: 100%;
-            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 100%;
+            height: 100%;
         }
 
         .terminal {
             width: 100%;
             height: 100%;
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 800px;
+            max-height: 90vh;
             border: 2px solid #00FF00;
             background-color: rgba(0, 0, 0, 0.8);
             box-shadow: 0px 0px 20px #00FF00;
             transform: rotateX(10deg) rotateY(5deg);
             animation: holographic-effect 5s infinite alternate;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1rem;
         }
 
         @keyframes holographic-effect {
@@ -63,11 +71,18 @@
         }
 
         .prompt {
+            display: flex;
             width: 100%;
+            align-items: center;
         }
 
         #command-input {
-            width: 100%;
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            color: #00FF00;
+            outline: none;
+            margin-left: 0.5rem;
         }
     </style>
 </head>
@@ -86,16 +101,18 @@
                 <h2 class="text-white">Trending Repositories</h2>
                 <div id="trending-repos" class="text-gray-300"></div>
             </div>
-            <div> <a href="https://github.com/berlintay/KeaysXYZ">
-                        <button>LINKS </button>
+            <div> 
+                <a href="https://github.com/berlintay/KeaysXYZ">
+                    <button>LINKS </button>
                </a>
+            </div>
             <!-- Command Prompt -->
             <div id="terminal-output" class="mb-4">
                 <!-- Dynamic content will be inserted here -->
             </div>
-            <div class="prompt flex items-center">
+            <div class="prompt">
                 <span id="prompt-line">𓅓 ⊸⊸⊶≻</span>
-                <input type="text" id="command-input" class="ml-2 bg-transparent border-none focus:outline-none flex-grow" autofocus aria-label="Command input">
+                <input type="text" id="command-input" autofocus aria-label="Command input">
             </div>
         </div>
     </div>
